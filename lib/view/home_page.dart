@@ -15,6 +15,57 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
+          title: const Row(
+            children: [
+              Text(
+                'DartM',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Poppins-Black',
+                  fontSize: 30,
+                ),
+              ),
+              Icon(Icons.play_circle, size: 25, color: Colors.white),
+              Text(
+                'vies',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Poppins-Black',
+                  fontSize: 30,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            // Conteúdo que deve estar à direita do título
+            Stack(
+              children: [
+                Transform(
+                  transform: Matrix4.rotationY(180 * 3.1415927 / 180),
+                  child: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(
+                      left: 5,
+                      right: 15), // Ajuste o espaçamento conforme necessário
+                  child: SizedBox(
+                    height: 45,
+                    width: 45,
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        'https://rollingstone.uol.com.br/media/uploads/luca-divulgacao-disney_1.jpg',
+                      ),
+                      child: Text(''),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
           bottom: TabBar(
             indicator: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary,
