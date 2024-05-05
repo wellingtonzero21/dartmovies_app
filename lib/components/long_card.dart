@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class RecomendadosCards extends StatelessWidget {
+class LongCard extends StatelessWidget {
   final String imageUrl;
   final double width;
   final double height;
 
-  const RecomendadosCards({
+  const LongCard({
     super.key,
     required this.imageUrl,
     required this.width,

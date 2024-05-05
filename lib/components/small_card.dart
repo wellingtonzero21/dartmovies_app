@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class EmaltaCards extends StatelessWidget {
+class SmallCard extends StatelessWidget {
   final String imageUrl;
   final double width;
   final double height;
 
-  const EmaltaCards({
+  const SmallCard({
     super.key,
     required this.imageUrl,
     required this.width,
