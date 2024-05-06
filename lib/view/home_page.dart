@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                     width: 40,
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(
-                        'https://rollingstone.uol.com.br/media/uploads/luca-divulgacao-disney_1.jpg',
+                        'https://avatars.githubusercontent.com/u/26902816?v=4',
                       ),
                     ),
                   ),
@@ -160,7 +160,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const DetailPage()),
+                                builder: (context) => DetailPage(
+                                      media: trendingMedia,
+                                    )),
                           );
                         },
                         child: Padding(
@@ -201,7 +203,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const DetailPage()),
+                                builder: (context) => DetailPage(
+                                      media: recommendedMedia,
+                                    )),
                           );
                         },
                         child: Padding(
