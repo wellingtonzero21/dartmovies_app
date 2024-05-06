@@ -1,7 +1,12 @@
+import 'package:dart_movies_app/components/long_card.dart';
+import 'package:dart_movies_app/model/media_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+  final MediaModel media;
+
+  const DetailPage({super.key, required this.media});
 
   @override
   Widget build(BuildContext context) {
@@ -13,19 +18,18 @@ class DetailPage extends StatelessWidget {
               alignment: Alignment.centerLeft,
               children: [
                 Image.network(
-                  'https://rollingstone.uol.com.br/media/uploads/luca-divulgacao-disney_1.jpg',
+                  media.urlLongBanner,
                   height: MediaQuery.of(context).size.height * 0.48,
                   width: MediaQuery.of(context).size.width,
                   fit: BoxFit.cover,
                 ),
                 Center(
-                    child: IconButton(
-                  icon: const Icon(
-                    Icons.play_circle_outline,
-                    size: 60,
+                  child: SvgPicture.asset(
+                    'assets/icons/play-icon.svg',
+                    width: 70,
+                    height: 70,
                   ),
-                  onPressed: () {},
-                )),
+                ),
                 Positioned(
                   left: 20,
                   top: 60,
@@ -33,6 +37,7 @@ class DetailPage extends StatelessWidget {
                     icon: const Icon(
                       Icons.arrow_back_ios,
                       color: Color(0xFF05F258),
+                      size: 30,
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -41,8 +46,8 @@ class DetailPage extends StatelessWidget {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20, top: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, top: 10),
               child: Column(
                 children: [
                   Row(
@@ -52,20 +57,20 @@ class DetailPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Luca',
-                              style: TextStyle(
+                              media.title,
+                              style: const TextStyle(
                                   fontSize: 40,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white),
                             ),
-                            Text(
+                            const Text(
                               'Animação | 1h 57m | 2021',
                               style: TextStyle(
                                   fontSize: 17,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Color(0xFFB5B5B5)),
                             ),
-                            Padding(
+                            const Padding(
                               padding: EdgeInsets.only(top: 10),
                               child: Row(
                                 children: [
@@ -90,16 +95,16 @@ class DetailPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 25),
+                      const SizedBox(height: 25),
                       Text(
-                        'Lorem ipsum dolor sit amet consectetur. Ultrices quis quam sit amet. Id duis affgorae dignissim non suspendisse nulla leo.Lorem ipsum dolor sit amet consectetur. Ultrices quis quam sit amet. Id duis affgorae dignissim non suspendisse nulla leo.Lorem ipsum dolor sit amet consectetur. Ultrices quis quam sit amet. Id duis affgorae dignissim non suspendisse nulla leo.Lorem ipsum dolor sit amet consectetur. Ultrices quis quam sit amet. Id duis affgorae dignissim non suspendisse nulla leo.',
-                        style: TextStyle(
+                        media.description,
+                        style: const TextStyle(
                             fontSize: 16,
                             fontFamily: 'Poppins-Regular',
                             color: Colors.white),
                       ),
-                      SizedBox(height: 50),
-                      Row(
+                      const SizedBox(height: 50),
+                      const Row(
                         children: [
                           Text('Classificação: ',
                               style: TextStyle(
@@ -115,7 +120,7 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Text('Diretor: ',
                               style: TextStyle(
@@ -133,7 +138,7 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Text('Roteiro: ',
                               style: TextStyle(
@@ -151,7 +156,7 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Text('Produtoras: ',
                               style: TextStyle(
@@ -169,20 +174,59 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 25),
-                      Text(
+                      const SizedBox(height: 25),
+                      const Text(
                         'Recomendados',
                         style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'Poppins-SemiBold',
                             color: Colors.white),
                       ),
-                      SizedBox(height: 25),
                     ],
                   ),
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: SizedBox(
+                height: 160,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: listRecommendeds.length,
+                  itemBuilder: (context, index) {
+                    MediaModel recommendedMedia = listRecommendeds[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailPage(
+                                    media: recommendedMedia,
+                                  )),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: recommendedMedia == listRecommendeds.first
+                                ? 15
+                                : 0,
+                            right: 20),
+                        child: LongCard(
+                          imageUrl: recommendedMedia.urlLongBanner,
+                          width: 280,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
