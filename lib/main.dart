@@ -12,12 +12,24 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.black,
-        background: const Color(0xFF0D0D0D),
-        primary: const Color(0xFF0D0D0D),
-        secondary: const Color(0xFF05F258),
-      )),
+        appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.black,
+        ),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.black,
+          background: const Color(0xFF0D0D0D),
+          primary: const Color(0xFF0D0D0D),
+          secondary: const Color(0xFF05F258),
+        ),
+        textTheme: const TextTheme(
+          bodySmall:
+              TextStyle(color: Colors.white, fontFamily: 'Poppins-SemiBold'),
+          bodyMedium:
+              TextStyle(color: Colors.white, fontFamily: 'Poppins-SemiBold'),
+          bodyLarge:
+              TextStyle(color: Colors.white, fontFamily: 'Poppins-SemiBold'),
+        ),
+      ),
       home: const HomePage(),
     );
   }

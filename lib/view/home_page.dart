@@ -1,3 +1,9 @@
+import 'package:dart_movies_app/components/actor_card.dart';
+import 'package:dart_movies_app/components/banner_card.dart';
+import 'package:dart_movies_app/components/long_card.dart';
+import 'package:dart_movies_app/components/small_card.dart';
+import 'package:dart_movies_app/model/media_model.dart';
+import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,30 +42,30 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          actions: [
-            // Conteúdo que deve estar à direita do título
-            Stack(
+          actions: const [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Transform(
-                  transform: Matrix4.rotationY(180 * 3.1415927 / 180),
-                  child: const Icon(
+                RotatedBox(
+                  quarterTurns: 1,
+                  child: Icon(
                     Icons.search,
                     color: Colors.white,
-                    size: 40,
+                    size: 35,
                   ),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(
-                      left: 5,
-                      right: 15), // Ajuste o espaçamento conforme necessário
+                    left: 10,
+                    right: 15,
+                  ),
                   child: SizedBox(
-                    height: 45,
-                    width: 45,
+                    height: 40,
+                    width: 40,
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(
                         'https://rollingstone.uol.com.br/media/uploads/luca-divulgacao-disney_1.jpg',
                       ),
-                      child: Text(''),
                     ),
                   ),
                 ),
@@ -92,19 +98,160 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: const Column(
-          children: [
-            Center(child: Text('Hello, Well =)')),
-            //Aqui vai ficar o o Componente "banner" - Nome do arquivo sugerido a ser criado no "components" é banner_card.dart
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: BannerCard(url: bannerMedia.urlLongBanner),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: Text(
+                  'Continuar assistindo',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  height: 160,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: listWatched.length,
+                    itemBuilder: (context, index) {
+                      MediaModel watchedMedia = listWatched[index];
 
-            //Aqui vai ficar o Componente "Continue assistindo" - Nome do arquivo sugerido a ser criado no "components" - long_play_card.dart
+                      return Padding(
+                        padding: EdgeInsets.only(
+                            left: watchedMedia == listWatched.first ? 15 : 0,
+                            right: 20),
+                        child: LongCard(
+                          imageUrl: watchedMedia.urlLongBanner,
+                          width: 280,
+                          progress: 0.2,
+                          isWatchedMedia: true,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: Text(
+                  'Em alta',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  height: 180,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: listTrendings.length,
+                    itemBuilder: (context, index) {
+                      MediaModel trendingMedia = listTrendings[index];
 
-            //Aqui vai ficar o Componente "Em Alta" - Nome do arquivo sugerido a ser criado no "components" - small_card.dart
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DetailPage()),
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left:
+                                  trendingMedia == listTrendings.first ? 15 : 0,
+                              right: 20),
+                          child: SmallCard(
+                            imageUrl: trendingMedia.urlSmallBanner,
+                            width: 130,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: Text(
+                  'Recomendados',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  height: 160,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: listRecommendeds.length,
+                    itemBuilder: (context, index) {
+                      MediaModel recommendedMedia = listRecommendeds[index];
 
-            //Aqui vai ficar o Componente "Recomendados" - Nome do arquivo sugerido a ser criado no "components" - long_card.dart
-
-            //Aqui vai ficar o Componente "Atores Populares"- Nome do arquivo sugerido a ser criado no "components" - actors_card.dart
-          ],
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DetailPage()),
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: recommendedMedia == listRecommendeds.first
+                                  ? 15
+                                  : 0,
+                              right: 20),
+                          child: LongCard(
+                            imageUrl: recommendedMedia.urlLongBanner,
+                            width: 280,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: Text(
+                  'Atores populares',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 120,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: listActors.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          left: listActors.first == listActors[index] ? 15 : 0,
+                          right: 15,
+                        ),
+                        child: ActorCard(
+                          imageUrl: listActors[index]['url'],
+                          nome: listActors[index]['name'],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
