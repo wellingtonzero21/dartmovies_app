@@ -34,7 +34,9 @@ class DetailPage extends StatelessWidget {
                       Icons.arrow_back_ios,
                       color: Color(0xFF05F258),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ],
