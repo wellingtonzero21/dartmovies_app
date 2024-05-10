@@ -1,5 +1,6 @@
 import 'package:dart_movies_app/components/long_card.dart';
 import 'package:dart_movies_app/model/media_model.dart';
+import 'package:dart_movies_app/view/movie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -24,10 +25,18 @@ class DetailPage extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
                 Center(
-                  child: SvgPicture.asset(
-                    'assets/icons/play-icon.svg',
-                    width: 70,
-                    height: 70,
+                  child: IconButton(
+                    icon: SvgPicture.asset(
+                      'assets/icons/play-icon.svg',
+                      width: 70,
+                      height: 70,
+                    ),
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>   MoviePage(imageUrl: media.urlLongBanner,)),
+                      )
+                    },
                   ),
                 ),
                 Positioned(
