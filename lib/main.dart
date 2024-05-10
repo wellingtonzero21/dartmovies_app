@@ -1,4 +1,4 @@
-import 'package:dart_movies_app/view/initial_page.dart';
+import 'package:dart_movies_app/view/intro_page.dart';
 
 import 'package:flutter/material.dart';
 
@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
               TextStyle(color: Colors.white, fontFamily: 'Poppins-SemiBold'),
         ),
       ),
-      home: const InitialPage(),
+      home: const IntroPage(),
     );
   }
 }
