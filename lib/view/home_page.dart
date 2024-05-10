@@ -98,164 +98,228 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
-                child: BannerCard(url: bannerMedia.urlLongBanner),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
-                child: Text(
-                  'Continuar assistindo',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: SizedBox(
-                  height: 160,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: listWatched.length,
-                    itemBuilder: (context, index) {
-                      MediaModel watchedMedia = listWatched[index];
-
-                      return Padding(
-                        padding: EdgeInsets.only(
-                            left: watchedMedia == listWatched.first ? 15 : 0,
-                            right: 20),
-                        child: LongCard(
-                          imageUrl: watchedMedia.urlLongBanner,
-                          width: 280,
-                          progress: 0.2,
-                          isWatchedMedia: true,
-                        ),
-                      );
-                    },
+        body: TabBarView(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, top: 20),
+                    child: BannerCard(url: bannerMedia.urlLongBanner),
                   ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
-                child: Text(
-                  'Em alta',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: SizedBox(
-                  height: 180,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: listTrendings.length,
-                    itemBuilder: (context, index) {
-                      MediaModel trendingMedia = listTrendings[index];
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                    child: Text(
+                      'Continuar assistindo',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      height: 160,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listWatched.length,
+                        itemBuilder: (context, index) {
+                          MediaModel watchedMedia = listWatched[index];
 
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailPage(
-                                      media: trendingMedia,
-                                    )),
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                left:
+                                    watchedMedia == listWatched.first ? 15 : 0,
+                                right: 20),
+                            child: LongCard(
+                              imageUrl: watchedMedia.urlLongBanner,
+                              width: 280,
+                              progress: 0.2,
+                              isWatchedMedia: true,
+                            ),
                           );
                         },
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left:
-                                  trendingMedia == listTrendings.first ? 15 : 0,
-                              right: 20),
-                          child: SmallCard(
-                            imageUrl: trendingMedia.urlSmallBanner,
-                            width: 130,
-                          ),
-                        ),
-                      );
-                    },
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
-                child: Text(
-                  'Recomendados',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: SizedBox(
-                  height: 160,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: listRecommendeds.length,
-                    itemBuilder: (context, index) {
-                      MediaModel recommendedMedia = listRecommendeds[index];
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                    child: Text(
+                      'Em alta',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      height: 180,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listTrendings.length,
+                        itemBuilder: (context, index) {
+                          MediaModel trendingMedia = listTrendings[index];
 
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailPage(
-                                      media: recommendedMedia,
-                                    )),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailPage(
+                                          media: trendingMedia,
+                                        )),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: trendingMedia == listTrendings.first
+                                      ? 15
+                                      : 0,
+                                  right: 20),
+                              child: SmallCard(
+                                imageUrl: trendingMedia.urlSmallBanner,
+                                width: 130,
+                              ),
+                            ),
                           );
                         },
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: recommendedMedia == listRecommendeds.first
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                    child: Text(
+                      'Recomendados',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      height: 160,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listRecommendeds.length,
+                        itemBuilder: (context, index) {
+                          MediaModel recommendedMedia = listRecommendeds[index];
+
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailPage(
+                                          media: recommendedMedia,
+                                        )),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left:
+                                      recommendedMedia == listRecommendeds.first
+                                          ? 15
+                                          : 0,
+                                  right: 20),
+                              child: LongCard(
+                                imageUrl: recommendedMedia.urlLongBanner,
+                                width: 280,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                    child: Text(
+                      'Atores populares',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 120,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listActors.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              left: listActors.first == listActors[index]
                                   ? 15
                                   : 0,
-                              right: 20),
-                          child: LongCard(
-                            imageUrl: recommendedMedia.urlLongBanner,
-                            width: 280,
-                          ),
-                        ),
+                              right: 15,
+                            ),
+                            child: ActorCard(
+                              imageUrl: listActors[index]['url'],
+                              nome: listActors[index]['name'],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 35 / 50,
+                ),
+                itemCount: listTrendings.length,
+                itemBuilder: (context, index) {
+                  MediaModel trendingMedia = listTrendings[index];
+
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailPage(
+                                  media: trendingMedia,
+                                )),
                       );
                     },
-                  ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SmallCard(
+                        imageUrl: trendingMedia.urlSmallBanner,
+                      ),
+                    ),
+                  );
+                }),
+            GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 35 / 50,
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
-                child: Text(
-                  'Atores populares',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 120,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: listActors.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          left: listActors.first == listActors[index] ? 15 : 0,
-                          right: 15,
-                        ),
-                        child: ActorCard(
-                          imageUrl: listActors[index]['url'],
-                          nome: listActors[index]['name'],
-                        ),
+                itemCount: listTrendings.length,
+                itemBuilder: (context, index) {
+                  MediaModel trendingMedia = listTrendings[index];
+
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailPage(
+                                  media: trendingMedia,
+                                )),
                       );
                     },
-                  ),
-                ),
-              ),
-            ],
-          ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SmallCard(
+                        imageUrl: trendingMedia.urlSmallBanner,
+                      ),
+                    ),
+                  );
+                }),
+          ],
         ),
       ),
     );
