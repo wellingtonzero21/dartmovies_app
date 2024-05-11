@@ -4,6 +4,7 @@ import 'package:dart_movies_app/components/long_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
+import 'package:dart_movies_app/view/search_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,23 +43,27 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          actions: const [
+          actions: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 RotatedBox(
-                  quarterTurns: 1,
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    right: 15,
-                  ),
+                    quarterTurns: 1,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchPage()),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                    )),
+                const Padding(
+                  padding: EdgeInsets.only(left: 6, right: 15, bottom: 6),
                   child: SizedBox(
                     height: 40,
                     width: 40,
@@ -266,59 +271,61 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 35 / 50,
-                ),
-                itemCount: listTrendings.length,
-                itemBuilder: (context, index) {
-                  MediaModel trendingMedia = listTrendings[index];
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 35 / 50,
+              ),
+              itemCount: listTrendings.length,
+              itemBuilder: (context, index) {
+                MediaModel trendingMedia = listTrendings[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailPage(
-                                  media: trendingMedia,
-                                )),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: SmallCard(
-                        imageUrl: trendingMedia.urlSmallBanner,
-                      ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailPage(
+                                media: trendingMedia,
+                              )),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SmallCard(
+                      imageUrl: trendingMedia.urlSmallBanner,
                     ),
-                  );
-                }),
+                  ),
+                );
+              },
+            ),
             GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 35 / 50,
-                ),
-                itemCount: listTrendings.length,
-                itemBuilder: (context, index) {
-                  MediaModel trendingMedia = listTrendings[index];
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 35 / 50,
+              ),
+              itemCount: listTrendings.length,
+              itemBuilder: (context, index) {
+                MediaModel trendingMedia = listTrendings[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailPage(
-                                  media: trendingMedia,
-                                )),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: SmallCard(
-                        imageUrl: trendingMedia.urlSmallBanner,
-                      ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailPage(
+                                media: trendingMedia,
+                              )),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SmallCard(
+                      imageUrl: trendingMedia.urlSmallBanner,
                     ),
-                  );
-                }),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
