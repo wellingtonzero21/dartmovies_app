@@ -65,6 +65,12 @@ List<MediaModel> listComedia =
 List<MediaModel> listDrama =
     listMedia.where((media) => media.genre == Genre.drama).toList();
 
+List<MediaModel> listDocu =
+    listMedia.where((media) => media.genre == Genre.documentario).toList();
+
+List<MediaModel> listAventura =
+    listMedia.where((media) => media.genre == Genre.aventura).toList();
+
 List<MediaModel> listMedia = [
   MediaModel(
       title: 'invasão Secreta',
@@ -95,7 +101,7 @@ List<MediaModel> listMedia = [
       isRecommended: true,
       isTrending: false,
       isWatched: false,
-      genre: Genre.drama,
+      genre: Genre.documentario,
       mediaType: MediaType.movie,
       lancamento: '2022',
       length: '2h 08m',
@@ -131,7 +137,7 @@ List<MediaModel> listMedia = [
     isRecommended: true,
     isTrending: false,
     isWatched: false,
-    genre: Genre.drama,
+    genre: Genre.documentario,
     mediaType: MediaType.movie,
     lancamento: '2022',
     length: '2h 10m',
@@ -150,7 +156,7 @@ List<MediaModel> listMedia = [
           'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/9AAED309BF9197B5A212AC1FBCF377D707FCE3F99886AB5001EE6BA9FFD7A84C/scale?width=600&aspectRatio=1.78&format=webp',
       isRecommended: true,
       isTrending: false,
-      genre: Genre.action,
+      genre: Genre.aventura,
       mediaType: MediaType.movie,
       lancamento: '2021',
       length: '1h 55m',
@@ -259,7 +265,7 @@ List<MediaModel> listMedia = [
           'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/847DC867FDFD8A176E78948B22D83336FCD2076A09E8554C7E6928FB8900E3C4/scale?width=600&aspectRatio=1.78&format=webp',
       isRecommended: false,
       isTrending: true,
-      genre: Genre.comedy,
+      genre: Genre.aventura,
       mediaType: MediaType.movie,
       lancamento: '2022',
       length: '1h 21m',

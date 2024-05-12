@@ -18,6 +18,10 @@ class DetailPage extends StatelessWidget {
         return 'Comédia';
       case Genre.drama:
         return 'Drama';
+      case Genre.documentario:
+        return 'Documentário';
+      case Genre.aventura:
+        return 'Aventura';
       default:
         return 'Desconhecido';
     }
