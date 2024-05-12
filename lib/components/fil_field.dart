@@ -4,11 +4,13 @@ class FilField extends StatelessWidget {
   // ignore: overridden_fields
   final TextEditingController? controller;
   final String? text;
+  final bool isObscured;
 
   const FilField({
     super.key,
     this.controller,
     this.text,
+    this.isObscured = false,
   });
 
   @override
@@ -31,6 +33,7 @@ class FilField extends StatelessWidget {
                 controller: controller,
                 style: const TextStyle(color: Colors.white),
                 cursorColor: Theme.of(context).colorScheme.secondary,
+                obscureText: isObscured, 
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintStyle:
