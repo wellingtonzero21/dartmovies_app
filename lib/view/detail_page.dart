@@ -130,33 +130,33 @@ class DetailPage extends StatelessWidget {
                             color: Colors.white),
                       ),
                       const SizedBox(height: 50),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Classificação: ',
+                          const Text('Classificação: ',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white)),
                           Text(
-                            '12 anos.',
-                            style: TextStyle(
+                            media.classif,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'Poppins-Regular',
                                 color: Colors.white),
                           ),
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Diretor: ',
+                          const Text('Diretor: ',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white)),
                           Expanded(
                             child: Text(
-                              'Enrico Casarosa.',
-                              style: TextStyle(
+                              media.diretor,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-Regular',
                                   color: Colors.white),
@@ -164,17 +164,17 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Roteiro: ',
+                          const Text('Roteiro: ',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white)),
                           Expanded(
                             child: Text(
-                              'Mike Jones e Jesse Andrews.',
-                              style: TextStyle(
+                              media.roteiro,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-Regular',
                                   color: Colors.white),
@@ -182,17 +182,17 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Produtoras: ',
+                          const Text('Produtoras: ',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white)),
                           Expanded(
                             child: Text(
-                              'Pixar, Walt Disney Pictures',
-                              style: TextStyle(
+                              media.produtoras,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-Regular',
                                   color: Colors.white),
