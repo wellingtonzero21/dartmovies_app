@@ -1,3 +1,5 @@
+import 'package:dart_movies_app/model/enums.dart';
+
 class MediaModel {
   String title;
   String description;
@@ -7,6 +9,10 @@ class MediaModel {
   bool isTrending; //FILME e Serie 'Em alta'
   bool isBanner; //FILME e Serie 'Banner'
   bool isWatched; //FILME e Serie 'Assistido'
+  Genre genre;
+  MediaType mediaType;
+  String length;
+  String lancamento;
 
   MediaModel({
     required this.title,
@@ -17,6 +23,10 @@ class MediaModel {
     this.isTrending = false,
     this.isBanner = false,
     this.isWatched = false,
+    required this.genre,
+    required this.mediaType,
+    required this.length,
+    required this.lancamento,
   });
 }
 
@@ -32,19 +42,37 @@ List<MediaModel> listWatched =
 MediaModel bannerMedia =
     listMedia.firstWhere((media) => media.isBanner == true);
 
+List<MediaModel> listMovies =
+    listMedia.where((media) => media.mediaType == MediaType.movie).toList();
+
+List<MediaModel> listSeries =
+    listMedia.where((media) => media.mediaType == MediaType.series).toList();
+
+List<MediaModel> listAcao =
+    listMedia.where((media) => media.genre == Genre.action).toList();
+
+List<MediaModel> listComedia =
+    listMedia.where((media) => media.genre == Genre.comedy).toList();
+
+List<MediaModel> listDrama =
+    listMedia.where((media) => media.genre == Genre.drama).toList();
+
 List<MediaModel> listMedia = [
   MediaModel(
-    title: 'invasão Secreta',
-    description:
-        'Na nova série da Marvel Studios, "Invasão Secreta", passada no presente do UCM, Nick Fury fica a saber de uma invasão clandestina da Terra por uma facção de Skrulls transmorfos. Fury junta-se aos seus aliados, incluindo Everett Ross, Maria Hill e o Skrull Talos, que prosperou na Terra. Juntos terão de correr contra o tempo para impedir uma iminente invasão dos Skrulls e salvar a humanidade.',
-    urlSmallBanner:
-        'https://a-static.mlcdn.com.br/470x352/poster-cartaz-procurando-nemo-a-pop-arte-poster/poparteskins2/15938519106/0b6f2e7a405e73bf91aca0f91ef37dba.jpeg',
-    urlLongBanner:
-        'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/4BB18D50B95F15505000DA09CDD36967487E199FE38C37282C8249228C5AA29B/scale?width=600&aspectRatio=1.78&format=webp',
-    isRecommended: false,
-    isTrending: false,
-    isBanner: true,
-  ),
+      title: 'invasão Secreta',
+      description:
+          'Na nova série da Marvel Studios, "Invasão Secreta", passada no presente do UCM, Nick Fury fica a saber de uma invasão clandestina da Terra por uma facção de Skrulls transmorfos. Fury junta-se aos seus aliados, incluindo Everett Ross, Maria Hill e o Skrull Talos, que prosperou na Terra. Juntos terão de correr contra o tempo para impedir uma iminente invasão dos Skrulls e salvar a humanidade.',
+      urlSmallBanner:
+          'https://a-static.mlcdn.com.br/470x352/poster-cartaz-procurando-nemo-a-pop-arte-poster/poparteskins2/15938519106/0b6f2e7a405e73bf91aca0f91ef37dba.jpeg',
+      urlLongBanner:
+          'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/4BB18D50B95F15505000DA09CDD36967487E199FE38C37282C8249228C5AA29B/scale?width=600&aspectRatio=1.78&format=webp',
+      isRecommended: false,
+      isTrending: false,
+      isBanner: true,
+      genre: Genre.action,
+      mediaType: MediaType.series,
+      lancamento: '2023',
+      length: '8h 30m'),
   MediaModel(
     title: 'Tetris',
     description:
@@ -55,6 +83,10 @@ List<MediaModel> listMedia = [
     isRecommended: true,
     isTrending: false,
     isWatched: false,
+    genre: Genre.drama,
+    mediaType: MediaType.movie,
+    lancamento: '2022',
+    length: '2h 10m',
   ),
   MediaModel(
     title: 'Green Book',
@@ -66,6 +98,10 @@ List<MediaModel> listMedia = [
     isRecommended: true,
     isTrending: false,
     isWatched: false,
+    genre: Genre.drama,
+    mediaType: MediaType.movie,
+    lancamento: '2019',
+    length: '2h 20m',
   ),
   MediaModel(
     title: 'Fome de Poder',
@@ -77,6 +113,10 @@ List<MediaModel> listMedia = [
     isRecommended: true,
     isTrending: false,
     isWatched: false,
+    genre: Genre.drama,
+    mediaType: MediaType.movie,
+    lancamento: '2022',
+    length: '2h 10m',
   ),
   MediaModel(
     title: 'O Rei Leão',
@@ -88,6 +128,10 @@ List<MediaModel> listMedia = [
         'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/9AAED309BF9197B5A212AC1FBCF377D707FCE3F99886AB5001EE6BA9FFD7A84C/scale?width=600&aspectRatio=1.78&format=webp',
     isRecommended: true,
     isTrending: false,
+    genre: Genre.action,
+    mediaType: MediaType.movie,
+    lancamento: '2021',
+    length: '2h 30m',
   ),
   MediaModel(
     title: 'Capitão Marvel',
@@ -99,6 +143,10 @@ List<MediaModel> listMedia = [
         'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/AFB3B75F0966E65CF1ADB805CF0C2AB9703B3E286CBE513E98C66210EF95D4FE/scale?width=600&aspectRatio=1.78&format=png',
     isRecommended: true,
     isTrending: false,
+    genre: Genre.action,
+    mediaType: MediaType.movie,
+    lancamento: '2018',
+    length: '2h 30m',
   ),
   MediaModel(
     title: 'Godzilla x Kong: The New Empire',
@@ -110,6 +158,10 @@ List<MediaModel> listMedia = [
         'https://br.web.img3.acsta.net/c_310_420/pictures/24/02/28/15/47/0426941.png',
     isRecommended: false,
     isTrending: true,
+    genre: Genre.action,
+    mediaType: MediaType.movie,
+    lancamento: '2024',
+    length: '2h 30m',
   ),
   MediaModel(
     title: 'Napoleão',
@@ -122,6 +174,10 @@ List<MediaModel> listMedia = [
     isRecommended: false,
     isTrending: false,
     isWatched: true,
+    genre: Genre.drama,
+    mediaType: MediaType.movie,
+    lancamento: '2024',
+    length: '2h 30m',
   ),
   MediaModel(
     title: 'The Banker',
@@ -133,6 +189,10 @@ List<MediaModel> listMedia = [
         'https://is1-ssl.mzstatic.com/image/thumb/gd09rRl37B3sBsnfxmhfFg/738x416.webp',
     isRecommended: false,
     isTrending: true,
+    genre: Genre.drama,
+    mediaType: MediaType.movie,
+    lancamento: '2021',
+    length: '2h 30m',
   ),
   MediaModel(
     title: 'Carros',
@@ -144,6 +204,10 @@ List<MediaModel> listMedia = [
         'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/CF7717723DFF51C0471EEA584195656F78ED5DF3B6523E4D3323ABACEE105B9F/scale?width=600&aspectRatio=1.78&format=webp',
     isRecommended: false,
     isTrending: true,
+    genre: Genre.comedy,
+    mediaType: MediaType.movie,
+    lancamento: '2005',
+    length: '2h 30m',
   ),
   MediaModel(
     title: 'Lightyear',
@@ -155,6 +219,10 @@ List<MediaModel> listMedia = [
         'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/847DC867FDFD8A176E78948B22D83336FCD2076A09E8554C7E6928FB8900E3C4/scale?width=600&aspectRatio=1.78&format=webp',
     isRecommended: false,
     isTrending: true,
+    genre: Genre.comedy,
+    mediaType: MediaType.movie,
+    lancamento: '2022',
+    length: '2h 30m',
   ),
   MediaModel(
     title: 'Jungle Cruise – A Maldição nos Confins da Selva',
@@ -166,6 +234,10 @@ List<MediaModel> listMedia = [
         'https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/EABAFEFC17673ADD8AC2053629217114E1DA24EBB1FBF8A08EA702BEF97453B9/scale?width=600&aspectRatio=1.78&format=webp',
     isRecommended: false,
     isTrending: true,
+    genre: Genre.comedy,
+    mediaType: MediaType.movie,
+    lancamento: '2023',
+    length: '2h 30m',
   ),
   MediaModel(
     title: 'Vingadores',
@@ -178,6 +250,10 @@ List<MediaModel> listMedia = [
     isRecommended: false,
     isTrending: true,
     isWatched: true,
+    genre: Genre.action,
+    mediaType: MediaType.movie,
+    lancamento: '2016',
+    length: '2h 45m',
   ),
 ];
 

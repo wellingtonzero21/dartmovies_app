@@ -1,4 +1,5 @@
 import 'package:dart_movies_app/components/long_card.dart';
+import 'package:dart_movies_app/model/enums.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/movie_page.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,10 @@ class DetailPage extends StatelessWidget {
                     onPressed: () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) =>   MoviePage(imageUrl: media.urlLongBanner,)),
+                        MaterialPageRoute(
+                            builder: (context) => MoviePage(
+                                  imageUrl: media.urlLongBanner,
+                                )),
                       )
                     },
                   ),
@@ -72,9 +76,9 @@ class DetailPage extends StatelessWidget {
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white),
                             ),
-                            const Text(
-                              'Animação | 1h 57m | 2021',
-                              style: TextStyle(
+                            Text(
+                              '${media.mediaType} | ${media.length} | ${media.lancamento}',
+                              style: const TextStyle(
                                   fontSize: 17,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Color(0xFFB5B5B5)),
