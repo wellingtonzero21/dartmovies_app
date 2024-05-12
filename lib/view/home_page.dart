@@ -2,8 +2,11 @@ import 'package:dart_movies_app/components/actor_card.dart';
 import 'package:dart_movies_app/components/banner_card.dart';
 import 'package:dart_movies_app/components/long_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
+import 'package:dart_movies_app/model/enums.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
+import 'package:dart_movies_app/view/movie_page.dart';
+import 'package:dart_movies_app/view/series_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

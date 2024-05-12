@@ -6,6 +6,7 @@ enum Genre {
 }
 
 enum MediaType {
+  all,
   movie,
   series,
 }

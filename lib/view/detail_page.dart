@@ -10,6 +10,19 @@ class DetailPage extends StatelessWidget {
 
   const DetailPage({super.key, required this.media});
 
+  String getGenreText() {
+    switch (media.genre) {
+      case Genre.action:
+        return 'Ação';
+      case Genre.comedy:
+        return 'Comédia';
+      case Genre.drama:
+        return 'Drama';
+      default:
+        return 'Desconhecido';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +90,7 @@ class DetailPage extends StatelessWidget {
                                   color: Colors.white),
                             ),
                             Text(
-                              '${media.mediaType} | ${media.length} | ${media.lancamento}',
+                              '${getGenreText()} | ${media.length} | ${media.lancamento}',
                               style: const TextStyle(
                                   fontSize: 17,
                                   fontFamily: 'Poppins-SemiBold',
