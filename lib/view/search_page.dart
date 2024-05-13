@@ -3,10 +3,36 @@ import 'package:dart_movies_app/model/media_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SearchPage extends StatelessWidget {
-  final MediaModel media;
+class SearchPage extends StatefulWidget {
+  //final MediaModel media;
 
-  const SearchPage({super.key, required this.media});
+  final List<MediaModel> mediaList;
+
+  const SearchPage({super.key, required this.mediaList});
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  final TextEditingController controller = TextEditingController();
+  List<MediaModel> midiaFiltrada = [];
+
+  @override
+  void initState() {
+    super.initState();
+    midiaFiltrada = widget.mediaList;
+  }
+
+  // Função de pesquisar
+  void filtroPeloTitulo(String letra) {
+    setState(() {
+      midiaFiltrada = widget.mediaList
+          .where((media) =>
+              media.title.toLowerCase().contains(letra.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +69,15 @@ class SearchPage extends StatelessWidget {
             PesquisarInput(
               controller: controller,
               style: const TextStyle(color: Colors.white),
+              onChanged: filtroPeloTitulo,
             ),
+            midiaFiltrada.isEmpty
+                ? const Center(
+                    child: Text('Nenhum resultado encontrado'),
+                  )
+                : Container(
+                    // ToDo: Grid do Wellington
+                    ),
           ],
         ),
       ),

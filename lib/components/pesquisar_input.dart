@@ -8,6 +8,7 @@ class PesquisarInput extends StatelessWidget {
     super.key,
     this.controller,
     this.style,
+    required void Function(String letra) onChanged,
   });
 
   final TextStyle? style;
