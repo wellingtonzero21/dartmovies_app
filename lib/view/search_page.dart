@@ -1,6 +1,7 @@
 import 'package:dart_movies_app/components/small_card.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:flutter/material.dart';
+import '../components/research_card.dart';
 import '../model/media_model.dart';
 
 class SearchPage extends StatefulWidget {
@@ -48,45 +49,47 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 25,
-          ),
+          const SizedBox(height: 25),
+          const ResearchCard(),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 35 / 50,
-                    ),
-                    itemCount: filteredMediaList.length,
-                    itemBuilder: (context, index) {
-                      MediaModel trendingMedia = filteredMediaList[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailPage(
-                                media: trendingMedia,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 35 / 50,
+                      ),
+                      itemCount: filteredMediaList.length,
+                      itemBuilder: (context, index) {
+                        MediaModel trendingMedia = filteredMediaList[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                  media: trendingMedia,
+                                ),
                               ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: SmallCard(
+                              imageUrl: trendingMedia.urlSmallBanner,
                             ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: SmallCard(
-                            imageUrl: trendingMedia.urlSmallBanner,
                           ),
-                        ),
-                      );
-                    },
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                  ),
-                ],
+                        );
+                      },
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
