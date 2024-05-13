@@ -1,52 +1,99 @@
-import 'package:dart_movies_app/components/pesquisar_input.dart';
-import 'package:dart_movies_app/model/media_model.dart';
+import 'package:dart_movies_app/components/small_card.dart';
+import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import '../components/research_card.dart';
+import '../model/media_model.dart';
 
-class SearchPage extends StatelessWidget {
-  final MediaModel media;
+class SearchPage extends StatefulWidget {
+  final TextEditingController controller = TextEditingController();
 
-  const SearchPage({super.key, required this.media});
+  SearchPage({super.key});
+
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  late List<MediaModel> filteredMediaList;
+
+  @override
+  void initState() {
+    super.initState();
+    filteredMediaList = listTrendings;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 40,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 13,
+              top: 60,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    alignment: Alignment.topLeft,
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Color(0xFF05F258),
-                      size: 30,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  alignment: Alignment.topLeft,
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Color(0xFF05F258),
+                    size: 30,
                   ),
-                ],
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 25),
+          const ResearchCard(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 35 / 50,
+                      ),
+                      itemCount: filteredMediaList.length,
+                      itemBuilder: (context, index) {
+                        MediaModel trendingMedia = filteredMediaList[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                  media: trendingMedia,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: SmallCard(
+                              imageUrl: trendingMedia.urlSmallBanner,
+                            ),
+                          ),
+                        );
+                      },
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            PesquisarInput(
-              controller: controller,
-              style: const TextStyle(color: Colors.white),
-              onChanged: (query) {},
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
