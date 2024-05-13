@@ -88,10 +88,19 @@ class _InitialPageState extends State<InitialPage> {
               ),
             ),
             const SizedBox(height: 60),
-            const ButtomCard(
-              height: 55,
-              width: 340,
-              text: 'Entrar',
+            GestureDetector(
+              child: const ButtomCard(
+                height: 55,
+                width: 340,
+                text: 'Entrar',
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ));
+              },
             ),
             const SizedBox(height: 15),
             GestureDetector(

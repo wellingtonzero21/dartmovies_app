@@ -71,10 +71,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               ],
             ),
             const SizedBox(height: 30),
-            const ButtomCard(
-              height: 55,
-              width: 340,
-              text: 'Cadastrar-se',
+            GestureDetector(
+              child: const ButtomCard(
+                height: 55,
+                width: 340,
+                text: 'Cadastrar-se',
+              ),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 10),

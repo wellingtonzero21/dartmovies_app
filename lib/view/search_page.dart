@@ -1,7 +1,8 @@
+import 'package:dart_movies_app/components/appbar_custom.dart';
+import 'package:dart_movies_app/components/research_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:flutter/material.dart';
-import '../components/research_card.dart';
 import '../model/media_model.dart';
 
 class SearchPage extends StatefulWidget {
@@ -10,10 +11,10 @@ class SearchPage extends StatefulWidget {
   SearchPage({super.key});
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  SearchPageState createState() => SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class SearchPageState extends State<SearchPage> {
   late List<MediaModel> filteredMediaList;
 
   @override
@@ -25,39 +26,29 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppBarCustom(pageTitle: ''),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 13,
-              top: 60,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  alignment: Alignment.topLeft,
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Color(0xFF05F258),
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 25),
-          const ResearchCard(),
           Expanded(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  children: [
-                    GridView.builder(
+              child: Column(
+                children: [
+                  ResearchCard(
+                    controller: widget.controller,
+                    onChanged: (String value) {
+                      setState(() {
+                        filteredMediaList = listTrendings
+                            .where((media) => media.title
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList();
+                      });
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 25),
+                    child: GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
@@ -71,14 +62,13 @@ class _SearchPageState extends State<SearchPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailPage(
-                                  media: trendingMedia,
-                                ),
-                              ),
+                                  builder: (context) => DetailPage(
+                                        media: trendingMedia,
+                                      )),
                             );
                           },
                           child: Padding(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(5),
                             child: SmallCard(
                               imageUrl: trendingMedia.urlSmallBanner,
                             ),
@@ -88,8 +78,8 @@ class _SearchPageState extends State<SearchPage> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

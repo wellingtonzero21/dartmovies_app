@@ -1,4 +1,3 @@
-import 'package:dart_movies_app/view/login_page.dart';
 import 'package:flutter/material.dart';
 
 class ButtomCard extends StatelessWidget {
