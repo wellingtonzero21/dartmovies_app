@@ -1,7 +1,7 @@
 
 # DartMovies_App
 
-Este projeto se baseia em uma plataforma de filmes e séries mobile em Flutter desenvolvida para validação do módulo de Desenvolvimento Cross-Platform do curso Desenvolve.
+Este projeto se baseia em uma plataforma de filmes e séries mobile em Flutter desenvolvida para validação do módulo de Desenvolvimento Cross-Platform do curso Desenvolve - Grupo Boticário em parceria com a Escola Koru.
 
 
 ## Logo do Projeto
@@ -52,22 +52,27 @@ E prontinho, agora você já tem acesso a todas as features de nosso app.
 ![App gif](/assets/docs/dartmode.gif)
 
 
-## Melhorias
+## Implementações Extras
 
-Decidimos adicionar telas de loading page, inicio, login, cadastro e termos de uso ao nosso aplicativo afim de gerar uma esperiencia mais próxima possivel da real.
+Decidimos adicionar as seguintes telas ao nosso aplicativo afim de gerar uma experiencia mais próxima possivel da real:
+- loading page, inicio;
+- login;
+- cadastro;
+- termos de uso. 
 
 
 ## Aprendizados
 
 - Criação de telas e navegação entre elas;
-- Uso de widgets básicos do Flutter, como Scaffold, ListView, ListTile, etc;
-- Princípios de gerenciamento de estado para aplicativos
-Flutter.
-
-
-## Stack utilizada
-
-**Front-end e Back-end:** Dart, Flutter.
+- Uso de widgets do Flutter, como Scaffold, ListView, ListTile, entre outros;
+- Princípios de gerenciamento de estado para aplicativos Flutter;
+- Banco de dados local;
+- Estruturação MVC;
+- Componentização de widgets;
+- Pair programin;
+- Utilização do Jira Software;
+- Implementaçào de assets;
+- Criação de layout com Figma.
 
 
 ## Autores
