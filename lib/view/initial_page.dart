@@ -1,5 +1,6 @@
 import 'package:dart_movies_app/components/buttom.dart';
 import 'package:dart_movies_app/view/create_account.dart';
+import 'package:dart_movies_app/view/login_page.dart';
 import 'package:flutter/material.dart';
 
 class InitialPage extends StatefulWidget {
@@ -86,11 +87,20 @@ class _InitialPageState extends State<InitialPage> {
                 fontSize: 17,
               ),
             ),
-            const SizedBox(height: 80),
-            const ButtomCard(
-              height: 55,
-              width: 340,
-              text: 'Entrar',
+            const SizedBox(height: 60),
+            GestureDetector(
+              child: const ButtomCard(
+                height: 55,
+                width: 340,
+                text: 'Entrar',
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ));
+              },
             ),
             const SizedBox(height: 15),
             GestureDetector(

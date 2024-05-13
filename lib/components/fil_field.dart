@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-class FilField extends StatelessWidget {
-  // ignore: overridden_fields
+class FillField extends StatelessWidget {
   final TextEditingController? controller;
   final String? text;
   final bool isObscured;
 
-  const FilField({
+  const FillField({
     super.key,
     this.controller,
     this.text,
@@ -28,18 +27,18 @@ class FilField extends StatelessWidget {
               border: Border.all(color: Colors.transparent),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: controller,
                 style: const TextStyle(color: Colors.white),
                 cursorColor: Theme.of(context).colorScheme.secondary,
-                obscureText: isObscured, 
+                obscureText: isObscured,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintStyle:
                       const TextStyle(color: Color.fromARGB(255, 88, 88, 88)),
                   labelText: text,
-                  labelStyle: TextStyle(color: Color(0xFF656565)), 
+                  labelStyle: const TextStyle(color: Color(0xFF656565)),
                 ),
               ),
             ),
@@ -48,4 +47,4 @@ class FilField extends StatelessWidget {
       ),
     );
   }
-} 
+}

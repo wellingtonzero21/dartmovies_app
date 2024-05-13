@@ -4,37 +4,43 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
   final String? pageTitle;
 
   const AppBarCustom({
-    Key? key,
+    super.key,
     required this.pageTitle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: Builder(
         builder: (BuildContext context) {
-          return IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xFF05F258),
-              size: 30,
+          return Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Color(0xFF05F258),
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
           );
         },
       ),
       title: Text(
-        pageTitle ?? '', 
-        style: const TextStyle(color: Color(0xFFFFFFFF)),
+        pageTitle ?? '',
+        style: const TextStyle(
+            fontSize: 20,
+            color: Color(0xFFFFFFFF),
+            fontFamily: 'Poppins-SemiBold'),
       ),
       centerTitle: true,
-      backgroundColor: const Color(0x0A0A0A),
-      toolbarHeight: 100,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      toolbarHeight: 60,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(100); 
+  Size get preferredSize => const Size.fromHeight(80);
 }

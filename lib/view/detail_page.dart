@@ -77,7 +77,7 @@ class DetailPage extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, top: 10),
+              padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
               child: Column(
                 children: [
                   Row(
@@ -127,6 +127,7 @@ class DetailPage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 25),
                       Text(
+                        textAlign: TextAlign.start,
                         media.description,
                         style: const TextStyle(
                             fontSize: 16,

@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MoviePage extends StatefulWidget {
   final String imageUrl;
@@ -23,11 +23,25 @@ class _MoviePageState extends State<MoviePage> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      Image.network(
-        widget.imageUrl,
-        fit: BoxFit.cover,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+      Stack(
+        children: [
+          Image.network(
+            widget.imageUrl,
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
+          Center(
+            child: IconButton(
+              icon: SvgPicture.asset(
+                'assets/icons/play-icon.svg',
+                width: 70,
+                height: 70,
+              ),
+              onPressed: () {},
+            ),
+          ),
+        ],
       ),
       Positioned(
         left: 20,
