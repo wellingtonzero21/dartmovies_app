@@ -1,3 +1,4 @@
+import 'package:dart_movies_app/view/login_page.dart';
 import 'package:flutter/material.dart';
 
 class ButtomCard extends StatelessWidget {
@@ -14,25 +15,20 @@ class ButtomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        height: MediaQuery.of(context).size.height * 0.07,
-        width: MediaQuery.of(context).size.width * 0.9,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        child: Center(
-            child: Text(
-          text,
-          style: const TextStyle(
-              color: Colors.black, fontFamily: 'Poppins-Bold', fontSize: 18),
-        )),
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      height: MediaQuery.of(context).size.height * 0.07,
+      width: MediaQuery.of(context).size.width * 0.9,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Theme.of(context).colorScheme.secondary,
       ),
-      onTap: () {
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),));
-      },
+      child: Center(
+          child: Text(
+        text,
+        style: const TextStyle(
+            color: Colors.black, fontFamily: 'Poppins-Bold', fontSize: 18),
+      )),
     );
   }
 }

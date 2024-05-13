@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class ResearchCard extends StatelessWidget {
   // ignore: overridden_fields
   final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
 
   const ResearchCard({
     super.key,
     this.controller,
+    this.onChanged,
   });
 
   @override

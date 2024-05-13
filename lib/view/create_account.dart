@@ -1,9 +1,9 @@
 import 'package:dart_movies_app/components/appbar_custom.dart';
 import 'package:dart_movies_app/components/buttom.dart';
+import 'package:dart_movies_app/components/fil_field.dart';
+import 'package:dart_movies_app/view/login_page.dart';
 import 'package:dart_movies_app/view/terms_of_use.dart';
 import 'package:flutter/material.dart';
-
-import '../components/fill_field_card.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -20,13 +20,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const FillField(text: 'Nome completo', height: 55, width: 340),
+            const FillField(text: 'Nome completo'),
             const SizedBox(height: 25),
-            const FillField(text: 'Email', height: 55, width: 340),
+            const FillField(text: 'Email'),
             const SizedBox(height: 25),
-            const FillField(text: 'Digite sua senha', height: 55, width: 340),
+            const FillField(text: 'Digite sua senha'),
             const SizedBox(height: 25),
-            const FillField(text: 'Confirmar senha', height: 55, width: 340),
+            const FillField(text: 'Confirmar senha'),
             const SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

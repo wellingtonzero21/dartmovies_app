@@ -1,5 +1,6 @@
 import 'package:dart_movies_app/components/buttom.dart';
 import 'package:dart_movies_app/view/create_account.dart';
+import 'package:dart_movies_app/view/login_page.dart';
 import 'package:flutter/material.dart';
 
 class InitialPage extends StatefulWidget {
