@@ -1,4 +1,5 @@
 import 'package:dart_movies_app/components/long_card.dart';
+import 'package:dart_movies_app/model/enums.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/movie_page.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,23 @@ class DetailPage extends StatelessWidget {
   final MediaModel media;
 
   const DetailPage({super.key, required this.media});
+
+  String getGenreText() {
+    switch (media.genre) {
+      case Genre.action:
+        return 'Ação';
+      case Genre.comedy:
+        return 'Comédia';
+      case Genre.drama:
+        return 'Drama';
+      case Genre.documentario:
+        return 'Documentário';
+      case Genre.aventura:
+        return 'Aventura';
+      default:
+        return 'Desconhecido';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +52,10 @@ class DetailPage extends StatelessWidget {
                     onPressed: () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) =>   MoviePage(imageUrl: media.urlLongBanner,)),
+                        MaterialPageRoute(
+                            builder: (context) => MoviePage(
+                                  imageUrl: media.urlLongBanner,
+                                )),
                       )
                     },
                   ),
@@ -72,9 +93,9 @@ class DetailPage extends StatelessWidget {
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white),
                             ),
-                            const Text(
-                              'Animação | 1h 57m | 2021',
-                              style: TextStyle(
+                            Text(
+                              '${getGenreText()} | ${media.length} | ${media.lancamento}',
+                              style: const TextStyle(
                                   fontSize: 17,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Color(0xFFB5B5B5)),
@@ -113,33 +134,33 @@ class DetailPage extends StatelessWidget {
                             color: Colors.white),
                       ),
                       const SizedBox(height: 50),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Classificação: ',
+                          const Text('Classificação: ',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white)),
                           Text(
-                            '12 anos.',
-                            style: TextStyle(
+                            media.classif,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'Poppins-Regular',
                                 color: Colors.white),
                           ),
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Diretor: ',
+                          const Text('Diretor: ',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white)),
                           Expanded(
                             child: Text(
-                              'Enrico Casarosa.',
-                              style: TextStyle(
+                              media.diretor,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-Regular',
                                   color: Colors.white),
@@ -147,17 +168,17 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Roteiro: ',
+                          const Text('Roteiro: ',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white)),
                           Expanded(
                             child: Text(
-                              'Mike Jones e Jesse Andrews.',
-                              style: TextStyle(
+                              media.roteiro,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-Regular',
                                   color: Colors.white),
@@ -165,17 +186,17 @@ class DetailPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          Text('Produtoras: ',
+                          const Text('Produtoras: ',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-SemiBold',
                                   color: Colors.white)),
                           Expanded(
                             child: Text(
-                              'Pixar, Walt Disney Pictures',
-                              style: TextStyle(
+                              media.produtoras,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins-Regular',
                                   color: Colors.white),

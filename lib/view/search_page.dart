@@ -43,6 +43,7 @@ class SearchPage extends StatelessWidget {
             PesquisarInput(
               controller: controller,
               style: const TextStyle(color: Colors.white),
+              onChanged: (query) {},
             ),
           ],
         ),
