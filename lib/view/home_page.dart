@@ -1,11 +1,12 @@
-import 'package:dart_movies_app/components/actor_card.dart';
-import 'package:dart_movies_app/components/banner_card.dart';
-import 'package:dart_movies_app/components/long_card.dart';
-import 'package:dart_movies_app/components/small_card.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:dart_movies_app/view/search_page.dart';
 import 'package:flutter/material.dart';
+
+import '../components/actor_card.dart';
+import '../components/banner_card.dart';
+import '../components/long_card.dart';
+import '../components/small_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

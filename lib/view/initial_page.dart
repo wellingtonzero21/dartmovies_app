@@ -86,7 +86,7 @@ class _InitialPageState extends State<InitialPage> {
                 fontSize: 17,
               ),
             ),
-            const SizedBox(height: 80),
+            const SizedBox(height: 60),
             const ButtomCard(
               height: 55,
               width: 340,

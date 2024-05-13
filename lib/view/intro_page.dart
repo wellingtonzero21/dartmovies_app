@@ -1,5 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:dart_movies_app/view/home_page.dart';
+import 'package:dart_movies_app/view/initial_page.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatefulWidget {
@@ -51,7 +51,7 @@ class _IntroPageState extends State<IntroPage> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const HomePage(),
+                      builder: (context) => const InitialPage(),
                     ),
                   );
                 },
