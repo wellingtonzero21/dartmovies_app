@@ -1,7 +1,9 @@
-
 # DartMovies_App
 
-Este projeto se baseia em uma plataforma de filmes e séries mobile em Flutter desenvolvida para validação e estudos do curso desenvolve
+Este projeto se baseia em uma plataforma de filmes e séries mobile em Flutter desenvolvida para validação do módulo de Desenvolvimento Cross-Platform do curso Desenvolve.
+
+
+## Logo do Projeto
 
 ![Logo](/assets/docs/logo_pequena.png)
 
