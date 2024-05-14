@@ -1,9 +1,12 @@
 
 # DartMovies_App
 
-Este projeto se baseia em uma plataforma de filmes e séries mobile em Flutter desenvolvida para validação e estudos do curso desenvolve
+Este projeto se baseia em uma plataforma de filmes e séries mobile em Flutter desenvolvida para validação do módulo de Desenvolvimento Cross-Platform do curso Desenvolve - Grupo Boticário em parceria com a Escola Koru.
 
-![Logo](/assets/docs/logo_pequena.png)
+
+## Logo do Projeto
+
+![Logo](/assets/docs/logoDartMovies.png)
 
 
 ## Screenshots
@@ -30,7 +33,9 @@ Após isso você deve instalar as dependências necessárias digitando o seguint
 
 E então para rodar o projeto clique em RUN, depois START DEBUGGING e selecionar o emulador de sua preferencia (previamente configurado no android studio).
 
-E prontinho, agora você já tem acesso a todas as features de nosso app
+E prontinho, agora você já tem acesso a todas as features de nosso app.
+
+
 ## Funcionalidades
 
 - Pagina inicial
@@ -39,7 +44,6 @@ E prontinho, agora você já tem acesso a todas as features de nosso app
 - Detalhes dos filmes
 - Pesquisa dinâmica
 - Aba filmes e aba séries 
-- Filtragem por gêneros
 - Modo tela cheia filmes
 
 
@@ -48,21 +52,27 @@ E prontinho, agora você já tem acesso a todas as features de nosso app
 ![App gif](/assets/docs/dartmode.gif)
 
 
-## Melhorias
+## Implementações Extras
 
-Decidimos adicionar telas de loading page, inicio, login, cadastro e termos de uso ao nosso aplicativo afim de gerar uma esperiencia mais próxima possivel da real.
-
+Decidimos adicionar as seguintes telas ao nosso aplicativo afim de gerar uma experiencia mais próxima possivel da real:
+- loading page, inicio;
+- login;
+- cadastro;
+- termos de uso. 
 
 
 ## Aprendizados
 
 - Criação de telas e navegação entre elas;
-- Uso de widgets básicos do Flutter, como Scaffold, ListView, ListTile, etc;
-- Princípios de gerenciamento de estado para aplicativos
-Flutter.
-## Stack utilizada
-
-**Front-end e Back-end:** Dart, Flutter.
+- Uso de widgets do Flutter, como Scaffold, ListView, ListTile, entre outros;
+- Princípios de gerenciamento de estado para aplicativos Flutter;
+- Banco de dados local;
+- Estruturação MVC;
+- Componentização de widgets;
+- Pair programin;
+- Utilização do Jira Software;
+- Implementaçào de assets;
+- Criação de layout com Figma.
 
 
 ## Autores
