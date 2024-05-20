@@ -1,21 +1,62 @@
+import 'package:dart_movies_app/api/http_adapter.dart';
+import 'package:dart_movies_app/api/models/movie_details_model.dart';
+import 'package:dart_movies_app/api/models/watch_continue_model.dart';
+import 'package:dart_movies_app/api/providers/movie_details_provider.dart';
+import 'package:dart_movies_app/api/providers/watch_continue_provider.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:dart_movies_app/view/search_page.dart';
 import 'package:flutter/material.dart';
-
 import '../components/actor_card.dart';
 import '../components/banner_card.dart';
 import '../components/long_card.dart';
 import '../components/small_card.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final MovieDetailsProvider movieDetailsProvider =
+      MovieDetailsProvider(httpAdater: HttpAdapter());
+  final WatchContinueProvider watchContinueProvider =
+      WatchContinueProvider(httpAdater: HttpAdapter());
+
+  HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  late List<MovieDetailsModel> moviedetailsList = [];
+  late List<Movie> movieListWC = [];
+  String imageInicioTop = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDetails();
+  }
+
+  Future<void> _fetchDetails() async {
+    int id = 120;
+    final movieDetailsModel =
+        await widget.movieDetailsProvider.getMovieDetail(id);
+    setState(() {
+      imageInicioTop = movieDetailsModel.backdropPath;
+    });
+    return;
+  }
+
+  Future<List<Movie>> _fetchWatchContinue() async {
+    try {
+      int page = 1;
+      final watchContinueModel =
+          await widget.watchContinueProvider.getWatchContinue(page);
+      return watchContinueModel.results ?? [];
+    } catch (e) {
+      // Handle error case
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -113,7 +154,11 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 15, right: 15, top: 20),
-                    child: BannerCard(url: bannerMedia.urlLongBanner),
+                    child: imageInicioTop.isNotEmpty
+                        ? BannerCard(
+                            url:
+                                'https://image.tmdb.org/t/p/w300$imageInicioTop')
+                        : const CircularProgressIndicator(),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: 15, right: 15, top: 20),
@@ -122,31 +167,47 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                      height: 160,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listWatched.length,
-                        itemBuilder: (context, index) {
-                          MediaModel watchedMedia = listWatched[index];
-
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                left:
-                                    watchedMedia == listWatched.first ? 15 : 0,
-                                right: 20),
-                            child: LongCard(
-                              imageUrl: watchedMedia.urlLongBanner,
-                              width: 280,
-                              progress: 0.2,
-                              isWatchedMedia: true,
+                  FutureBuilder<List<Movie>>(
+                    future: _fetchWatchContinue(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Text('Erro ao carregar dados');
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Text('Nenhum filme para continuar');
+                      } else {
+                        final movieListWC = snapshot.data!;
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: SizedBox(
+                            height: 160,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 4, //movieListWC.length,
+                              itemBuilder: (context, index) {
+                                Movie watchedMedia = movieListWC[index];
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      left: watchedMedia == movieListWC.first
+                                          ? 15
+                                          : 0,
+                                      right: 20),
+                                  child: LongCard(
+                                    imageUrl:
+                                        'https://image.tmdb.org/t/p/w200${watchedMedia.backdropPath}',
+                                    width: 280,
+                                    progress: 0.2,
+                                    isWatchedMedia: true,
+                                    title: watchedMedia.title ?? '',
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-                    ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: 15, right: 15, top: 20),

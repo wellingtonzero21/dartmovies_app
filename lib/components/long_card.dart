@@ -7,15 +7,16 @@ class LongCard extends StatelessWidget {
   final double? height;
   final bool isWatchedMedia;
   final double progress;
+  final String title;
 
-  const LongCard({
-    super.key,
-    required this.imageUrl,
-    this.width,
-    this.height,
-    this.isWatchedMedia = false,
-    this.progress = 0.0,
-  });
+  const LongCard(
+      {super.key,
+      required this.imageUrl,
+      this.width,
+      this.height,
+      this.isWatchedMedia = false,
+      this.progress = 0.0,
+      this.title = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +60,7 @@ class LongCard extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned(bottom: 30, child: Text(title)),
           ],
         ),
       ),
