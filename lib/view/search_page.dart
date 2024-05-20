@@ -74,6 +74,7 @@ class SearchPageState extends State<SearchPage> {
       movieList = discoverMovieModel.results ?? [];
       //filteredMediaList = movieList.map(movieToMediaModel).toList();
       filteredMediaList.addAll(movieList.map(movieToMediaModel).toList());
+
       paginaCorrente++;
     });
     return;
@@ -128,7 +129,6 @@ class SearchPageState extends State<SearchPage> {
                             itemBuilder: (context, index) {
                               MediaModel trendingMedia =
                                   filteredMediaList[index];
-
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
