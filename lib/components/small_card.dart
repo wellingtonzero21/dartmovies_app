@@ -20,7 +20,7 @@ class SmallCard extends StatelessWidget {
         imageUrl,
         width: width,
         height: height,
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
       ),
     );
   }
