@@ -5,15 +5,17 @@ import 'package:dart_movies_app/components/research_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
 import 'package:dart_movies_app/model/enums.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
+import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../model/media_model.dart';
 
 class SearchPage extends StatefulWidget {
   final TextEditingController controller = TextEditingController();
-  final DiscoverMovieProvider discoverMovieProvider;
+  final DiscoverMovieProvider discoverMovieProvider =
+      DiscoverMovieProvider(httpAdater: HttpAdapter());
 
-  SearchPage({super.key, required this.discoverMovieProvider});
+  SearchPage({super.key});
 
   @override
   SearchPageState createState() => SearchPageState();

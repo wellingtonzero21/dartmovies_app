@@ -1,5 +1,3 @@
-import 'package:dart_movies_app/api/http_adapter.dart';
-import 'package:dart_movies_app/api/providers/discover_movie_provider.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:dart_movies_app/view/search_page.dart';
@@ -56,10 +54,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SearchPage(
-                                  discoverMovieProvider: DiscoverMovieProvider(
-                                      httpAdater: HttpAdapter()))),
+                          MaterialPageRoute(builder: (context) => SearchPage()),
                         );
                       },
                       icon: const Icon(

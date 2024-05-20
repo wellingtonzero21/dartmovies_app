@@ -15,8 +15,12 @@ class HttpAdapter {
       'accept': 'application/json',
     },
   }) async {
-    final response = await http.get(Uri.parse(url),
-        headers: {...headers, 'Authorization': 'Bearer $token'});
-    return jsonDecode(response.body);
+    try {
+      final response = await http.get(Uri.parse(url),
+          headers: {...headers, 'Authorization': 'Bearer $token'});
+      return jsonDecode(response.body);
+    } catch (e) {
+      throw Exception('Falha na conexão com a internet');
+    }
   }
 }
