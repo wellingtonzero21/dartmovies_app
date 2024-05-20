@@ -1,21 +1,53 @@
+import 'package:dart_movies_app/api/models/discover_movie_model.dart';
+import 'package:dart_movies_app/api/models/trending_movies.dart';
+import 'package:dart_movies_app/api/models/trending_people_model.dart';
+import 'package:dart_movies_app/api/provider/discover_movie_provider.dart';
+import 'package:dart_movies_app/api/provider/trending_movie_provider.dart';
+import 'package:dart_movies_app/components/recommended_list.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:dart_movies_app/view/search_page.dart';
 import 'package:flutter/material.dart';
 
+import '../api/http_adapter.dart';
 import '../components/actor_card.dart';
 import '../components/banner_card.dart';
 import '../components/long_card.dart';
 import '../components/small_card.dart';
+import '../components/trending_movies_list.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  late List<Trending> trendingMovies = [];
+  late List<Movie> allMovies = [];
+  late List<People> allPeople = [];
+
+  @override
+  void initState() {
+    fetchTrendingMovies();
+    super.initState();
+  }
+
+  Future<void> fetchTrendingMovies() async {
+    final trendingProvider = TrendingMoviesProvider(httpAdater: HttpAdapter());
+    final trendingMoviesModel = await trendingProvider.getTrendingMovies();
+
+    final allMoviesProvider = DiscoverMovieProvider(httpAdater: HttpAdapter());
+    final allMoviesModel = await allMoviesProvider.getDiscoverMovie();
+    setState(() {
+      trendingMovies = trendingMoviesModel.results ?? [];
+      allMovies = allMoviesModel.results ?? [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -157,38 +189,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                      height: 180,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listTrendings.length,
-                        itemBuilder: (context, index) {
-                          MediaModel trendingMedia = listTrendings[index];
-
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailPage(
-                                          media: trendingMedia,
-                                        )),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: trendingMedia == listTrendings.first
-                                      ? 15
-                                      : 0,
-                                  right: 20),
-                              child: SmallCard(
-                                imageUrl: trendingMedia.urlSmallBanner,
-                                width: 130,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                    child: TrendingMoviesList(
+                      trendingMovies: trendingMovies,
                     ),
                   ),
                   const Padding(
@@ -200,41 +202,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                      height: 160,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listRecommendeds.length,
-                        itemBuilder: (context, index) {
-                          MediaModel recommendedMedia = listRecommendeds[index];
-
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailPage(
-                                          media: recommendedMedia,
-                                        )),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left:
-                                      recommendedMedia == listRecommendeds.first
-                                          ? 15
-                                          : 0,
-                                  right: 20),
-                              child: LongCard(
-                                imageUrl: recommendedMedia.urlLongBanner,
-                                width: 280,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                    child: RecommendedList(movie: allMovies),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: 15, right: 15, top: 20),
@@ -252,6 +220,8 @@ class _HomePageState extends State<HomePage> {
                         scrollDirection: Axis.horizontal,
                         itemCount: listActors.length,
                         itemBuilder: (context, index) {
+                          People people = allPeople[index];
+
                           return Padding(
                             padding: EdgeInsets.only(
                               left: listActors.first == listActors[index]
@@ -276,24 +246,26 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 3,
                 childAspectRatio: 35 / 50,
               ),
-              itemCount: listTrendings.length,
+              itemCount: allMovies.length,
               itemBuilder: (context, index) {
-                MediaModel trendingMedia = listTrendings[index];
+                Movie movies = allMovies[index];
 
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailPage(
-                                media: trendingMedia,
-                              )),
+                        builder: (context) => DetailPage(
+                          media: movies,
+                        ),
+                      ),
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(6),
                     child: SmallCard(
-                      imageUrl: trendingMedia.urlSmallBanner,
+                      imageUrl:
+                          "https://media.themoviedb.org/t/p/w220_and_h330_face${movies.posterPath}",
                     ),
                   ),
                 );
@@ -304,9 +276,9 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 3,
                 childAspectRatio: 35 / 50,
               ),
-              itemCount: listTrendings.length,
+              itemCount: allMovies.length,
               itemBuilder: (context, index) {
-                MediaModel trendingMedia = listTrendings[index];
+                Movie movies = allMovies[index];
 
                 return GestureDetector(
                   onTap: () {
@@ -314,14 +286,15 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DetailPage(
-                                media: trendingMedia,
+                                media: movies,
                               )),
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(6),
                     child: SmallCard(
-                      imageUrl: trendingMedia.urlSmallBanner,
+                      imageUrl:
+                          "https://media.themoviedb.org/t/p/w220_and_h330_face${movies.posterPath}",
                     ),
                   ),
                 );
