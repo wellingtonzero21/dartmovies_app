@@ -14,3 +14,4 @@ class MovieDetailsProvider {
     return MovieDetailsModel.fromJson(response);
   }
 }
+

@@ -14,3 +14,4 @@ class TrendingMoviesProvider {
     return TrendingMoviesModel.fromJson(response);
   }
 }
+

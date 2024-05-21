@@ -15,3 +15,4 @@ class WatchContinueProvider {
     return WatchContinueModel.fromJson(response);
   }
 }
+

@@ -15,3 +15,4 @@ class DiscoverMovieProvider {
     return DiscoverMovieModel.fromJson(response);
   }
 }
+
