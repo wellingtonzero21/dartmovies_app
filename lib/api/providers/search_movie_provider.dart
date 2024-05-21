@@ -8,7 +8,7 @@ class SearchMovieProvider {
 
   Future<DiscoverMovieModel> getSearchMovie(String text, int page) async {
     final url =
-        'https://api.themoviedb.org/3/search/movie?query=$text&include_adult=false&language=en-US&page=$page';
+        'https://api.themoviedb.org/3/search/movie?query=$text&include_adult=false&language=pt-BR&page=$page';
 
     final response = await httpAdater.get(url: url);
 

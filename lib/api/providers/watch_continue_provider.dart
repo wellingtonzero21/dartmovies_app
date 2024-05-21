@@ -8,11 +8,10 @@ class WatchContinueProvider {
 
   Future<WatchContinueModel> getWatchContinue(int pagina) async {
     final url =
-        'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=$pagina&sort_by=popularity.desc';
+        'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=pt-BR&page=$pagina&sort_by=popularity.desc';
 
     final response = await httpAdater.get(url: url);
 
     return WatchContinueModel.fromJson(response);
   }
 }
-
