@@ -19,8 +19,8 @@ class BannerCard extends StatelessWidget {
                 child: Image.network(
                   url,
                   width: MediaQuery.of(context).size.width,
-                  // height: MediaQuery.of(context).size.height * 0.25,
-                  // fit: BoxFit.fitWidth,
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

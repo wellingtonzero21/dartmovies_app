@@ -1,14 +1,16 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
+import 'package:dart_movies_app/api/models/discover_movie_model.dart';
 import 'package:dart_movies_app/api/models/movie_details_model.dart';
-import 'package:dart_movies_app/api/provider/movie_details_provider.dart';
-import 'package:dart_movies_app/components/long_card.dart';
-import 'package:dart_movies_app/model/enums.dart';
+import 'package:dart_movies_app/api/providers/discover_movie_provider.dart';
+import 'package:dart_movies_app/api/providers/movie_details_provider.dart';
+import 'package:dart_movies_app/components/recommended_list.dart';
 import 'package:dart_movies_app/model/media_model.dart';
-import 'package:dart_movies_app/view/movie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DetailPage extends StatefulWidget {
+  final DiscoverMovieProvider allMoviesProvider =
+      DiscoverMovieProvider(httpAdater: HttpAdapter());
   final MovieDetailsProvider movieDetailsProvider =
       MovieDetailsProvider(httpAdater: HttpAdapter());
   final int id;
@@ -19,25 +21,9 @@ class DetailPage extends StatefulWidget {
   State<DetailPage> createState() => _DetailPageState();
 }
 
-/* String getGenreText() {
-  switch (media.genre) {
-    case Genre.action:
-      return 'Ação';
-    case Genre.comedy:
-      return 'Comédia';
-    case Genre.drama:
-      return 'Drama';
-    case Genre.documentario:
-      return 'Documentário';
-    case Genre.aventura:
-      return 'Aventura';
-    default:
-      return 'Desconhecido';
-  }
-} */
-
 class _DetailPageState extends State<DetailPage> {
   MovieDetailsModel? moviedetailsList;
+  late List<Movie> allMovies;
   @override
   void initState() {
     super.initState();
@@ -48,7 +34,10 @@ class _DetailPageState extends State<DetailPage> {
     int id = widget.id;
     final movieDetailsModel =
         await widget.movieDetailsProvider.getMovieDetail(id);
+    final allMoviesProvider = DiscoverMovieProvider(httpAdater: HttpAdapter());
+    final moviesModel = await allMoviesProvider.getDiscoverMovie(1);
     setState(() {
+      allMovies = moviesModel.results ?? [];
       moviedetailsList = movieDetailsModel;
     });
     return;
@@ -251,13 +240,13 @@ class _DetailPageState extends State<DetailPage> {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: SizedBox(
-                height: 160,
+                height: 200,
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: listRecommendeds.length,
                   itemBuilder: (context, index) {
-                    MediaModel recommendedMedia = listRecommendeds[index];
+                    //Movie movies = allMovies[index];
 
                     return GestureDetector(
                       onTap: () {
@@ -269,16 +258,8 @@ class _DetailPageState extends State<DetailPage> {
                                   )),
                         ); */
                       },
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: recommendedMedia == listRecommendeds.first
-                                ? 15
-                                : 0,
-                            right: 20),
-                        child: LongCard(
-                          imageUrl: recommendedMedia.urlLongBanner,
-                          width: 280,
-                        ),
+                      child: RecommendedList(
+                        movie: allMovies,
                       ),
                     );
                   },

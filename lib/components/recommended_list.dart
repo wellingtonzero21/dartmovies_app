@@ -1,6 +1,5 @@
 import 'package:dart_movies_app/api/models/discover_movie_model.dart';
 import 'package:dart_movies_app/components/small_card.dart';
-import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class RecommendedList extends StatelessWidget {
@@ -30,7 +29,7 @@ class RecommendedList extends StatelessWidget {
             },
             child: Padding(
               padding: EdgeInsets.only(
-                  left: allMoviesModel == movie.first ? 15 : 0, right: 20),
+                  left: allMoviesModel == movie.first ? 15 : 0, right: 15),
               child: SmallCard(
                 imageUrl:
                     'https://media.themoviedb.org/t/p/w220_and_h330_face${allMoviesModel.posterPath}',
