@@ -1,8 +1,10 @@
 import 'package:dart_movies_app/api/models/discover_movie_model.dart';
+import 'package:dart_movies_app/api/models/movie_details_model.dart';
 import 'package:dart_movies_app/api/models/trending_movies_model.dart';
 import 'package:dart_movies_app/api/models/trending_people_model.dart';
-import 'package:dart_movies_app/api/provider/discover_movie_provider.dart';
+import 'package:dart_movies_app/api/providers/discover_movie_provider.dart';
 import 'package:dart_movies_app/api/provider/trending_movie_provider.dart';
+import 'package:dart_movies_app/api/providers/movie_details_provider.dart';
 import 'package:dart_movies_app/components/recommended_list.dart';
 import 'package:dart_movies_app/model/media_model.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
@@ -19,8 +21,12 @@ import '../components/trending_movies_list.dart';
 class HomePage extends StatefulWidget {
   final MovieDetailsProvider movieDetailsProvider =
       MovieDetailsProvider(httpAdater: HttpAdapter());
-  final WatchContinueProvider watchContinueProvider =
-      WatchContinueProvider(httpAdater: HttpAdapter());
+  final DiscoverMovieProvider watchContinueProvider =
+      DiscoverMovieProvider(httpAdater: HttpAdapter());
+  final TrendingMoviesProvider trendingProvider =
+      TrendingMoviesProvider(httpAdater: HttpAdapter());
+  final DiscoverMovieProvider allMoviesProvider =
+      DiscoverMovieProvider(httpAdater: HttpAdapter());
 
   HomePage({super.key});
 
@@ -30,28 +36,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late List<MovieDetailsModel> moviedetailsList = [];
-  late List<Trending> trendingMovies = [];
   late List<Movie> movieListWC = [];
+  late List<Trending> trendingMovies = [];
   late List<People> allPeople = [];
   late List<Movie> allMovies = [];
   String imageInicioTop = '';
 
   @override
   void initState() {
-    fetchTrendingMovies();
     super.initState();
+    _fetchDetails();
+    _fetchTrendingMovies();
   }
 
-  Future<void> fetchTrendingMovies() async {
+  Future<void> _fetchTrendingMovies() async {
     final trendingProvider = TrendingMoviesProvider(httpAdater: HttpAdapter());
     final trendingMoviesModel = await trendingProvider.getTrendingMovies();
 
     final allMoviesProvider = DiscoverMovieProvider(httpAdater: HttpAdapter());
-    final allMoviesModel = await allMoviesProvider.getDiscoverMovie();
+    final allMoviesModel = await allMoviesProvider.getDiscoverMovie(1);
     setState(() {
       trendingMovies = trendingMoviesModel.results ?? [];
       allMovies = allMoviesModel.results ?? [];
     });
+  }
 
   Future<void> _fetchDetails() async {
     int id = 120;
@@ -63,11 +71,11 @@ class _HomePageState extends State<HomePage> {
     return;
   }
 
-  Future<List<Movie>> _fetchWatchContinue() async {
+  Future<List<Movie>> fetchWatchContinue() async {
     try {
       int page = 1;
       final watchContinueModel =
-          await widget.watchContinueProvider.getWatchContinue(page);
+          await widget.watchContinueProvider.getDiscoverMovie(page);
       return watchContinueModel.results ?? [];
     } catch (e) {
       // Handle error case
@@ -186,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   FutureBuilder<List<Movie>>(
-                    future: _fetchWatchContinue(),
+                    future: fetchWatchContinue(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
@@ -267,7 +275,7 @@ class _HomePageState extends State<HomePage> {
                         scrollDirection: Axis.horizontal,
                         itemCount: listActors.length,
                         itemBuilder: (context, index) {
-                          People people = allPeople[index];
+                          //People people = allPeople[index];
 
                           return Padding(
                             padding: EdgeInsets.only(
@@ -302,9 +310,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailPage(
-                          media: movies,
-                        ),
+                        builder: (context) => DetailPage(id: movies.id ?? 0),
                       ),
                     );
                   },
@@ -329,13 +335,13 @@ class _HomePageState extends State<HomePage> {
 
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailPage(
-                                media: movies,
-                              )),
-                    );
+                    /* Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailPage(
+                                  media: movies,
+                                )),
+                      ); */
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(6),
@@ -352,5 +358,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 }
