@@ -1,5 +1,5 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
-import 'package:dart_movies_app/api/models/trending_movies.dart';
+import 'package:dart_movies_app/api/models/trending_movies_model.dart';
 
 class TrendingMoviesProvider {
   final HttpAdapter httpAdater;

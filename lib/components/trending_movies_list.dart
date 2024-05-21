@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../api/models/trending_movies.dart';
+import '../api/models/trending_movies_model.dart';
 import '../view/detail_page.dart';
 import 'small_card.dart';
 
@@ -28,14 +28,14 @@ class _TrendingMoviesListState extends State<TrendingMoviesList> {
 
           return GestureDetector(
             onTap: () {
-              Navigator.push(
+              /* Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailPage(
                     trending: trendingMovie,
                   ),
                 ),
-              );
+              ); */
             },
             child: Padding(
               padding: EdgeInsets.only(

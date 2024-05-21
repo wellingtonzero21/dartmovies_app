@@ -20,13 +20,13 @@ class RecommendedList extends StatelessWidget {
 
           return GestureDetector(
             onTap: () {
-              Navigator.push(
+              /* Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => DetailPage(
-                          media: allMoviesModel,
+                          media: allMoviesModel.,
                         )),
-              );
+              ); */
             },
             child: Padding(
               padding: EdgeInsets.only(

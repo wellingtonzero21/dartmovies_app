@@ -131,13 +131,13 @@ class SearchPageState extends State<SearchPage> {
                                   filteredMediaList[index];
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
+                                  /* Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => DetailPage(
-                                              media: trendingMedia,
-                                            )),
-                                  );
+                                      builder: (context) =>
+                                          DetailPage(id: trendingMedia.id ?? 0),
+                                    ),
+                                  ); */
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(5),

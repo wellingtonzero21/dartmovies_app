@@ -62,7 +62,7 @@ class MovieDetailsModel {
       genres: List<Genre>.from(json['genres'].map((x) => Genre.fromJson(x))),
       homepage: json['homepage'],
       id: json['id'],
-      imdbId: json['imdb_id'],
+      imdbId: json['imdb_id'] ?? '',
       originalLanguage: json['original_language'],
       originalTitle: json['original_title'],
       overview: json['overview'],

@@ -1,6 +1,6 @@
 class WatchContinueModel {
   int? page;
-  List<Movie>? results;
+  List<Movie2>? results;
   int? totalPages;
   int? totalResults;
 
@@ -10,9 +10,9 @@ class WatchContinueModel {
   WatchContinueModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
-      results = <Movie>[];
+      results = <Movie2>[];
       json['results'].forEach((v) {
-        results!.add(Movie.fromJson(v));
+        results!.add(Movie2.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
@@ -31,7 +31,7 @@ class WatchContinueModel {
   }
 }
 
-class Movie {
+class Movie2 {
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
@@ -47,7 +47,7 @@ class Movie {
   double? voteAverage;
   int? voteCount;
 
-  Movie(
+  Movie2(
       {this.adult,
       this.backdropPath,
       this.genreIds,
@@ -63,7 +63,7 @@ class Movie {
       this.voteAverage,
       this.voteCount});
 
-  Movie.fromJson(Map<String, dynamic> json) {
+  Movie2.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = json['genre_ids'].cast<int>();
