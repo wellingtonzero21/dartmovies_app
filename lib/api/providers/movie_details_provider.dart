@@ -7,7 +7,7 @@ class MovieDetailsProvider {
   MovieDetailsProvider({required this.httpAdater});
 
   Future<MovieDetailsModel> getMovieDetail(int id) async {
-    final url = 'https://api.themoviedb.org/3/movie/$id?language=en-US';
+    final url = 'https://api.themoviedb.org/3/movie/$id?language=pt-BR';
 
     final response = await httpAdater.get(url: url);
 

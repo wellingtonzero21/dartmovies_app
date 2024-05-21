@@ -6,7 +6,7 @@ class SeriesProvider {
 
   SeriesProvider({required this.httpAdater});
 
-  Future<SeriesProviderModel> getTrendingMovies() async {
+  Future<SeriesProviderModel> getSeriesMovies() async {
     const url =
         'https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=pt-BR&page=1&sort_by=vote_count.desc';
 

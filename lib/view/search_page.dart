@@ -4,10 +4,8 @@ import 'package:dart_movies_app/components/appbar_custom.dart';
 import 'package:dart_movies_app/components/research_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
 import 'package:dart_movies_app/model/enums.dart';
-import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../model/media_model.dart';
 
 class SearchPage extends StatefulWidget {

@@ -7,8 +7,7 @@ class TrendingMoviesProvider {
   TrendingMoviesProvider({required this.httpAdater});
 
   Future<TrendingMoviesModel> getTrendingMovies() async {
-    const url =
-        'https://api.themoviedb.org/3/trending/movie/day?language=pt-BR';
+    const url = 'https://api.themoviedb.org/3/trending/all/day?language=pt-BR';
 
     final response = await httpAdater.get(url: url);
 
