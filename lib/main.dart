@@ -1,5 +1,7 @@
+import 'package:dart_movies_app/bloc/media/media_bloc.dart';
 import 'package:dart_movies_app/view/intro_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MainApp());
@@ -31,7 +33,10 @@ class MainApp extends StatelessWidget {
               TextStyle(color: Colors.white, fontFamily: 'Poppins-SemiBold'),
         ),
       ),
-      home: const IntroPage(),
+      home: BlocProvider(
+        create: (context) => MediaBloc(),
+        child: const IntroPage(),
+      ),
     );
   }
 }

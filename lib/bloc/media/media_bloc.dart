@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'media_event.dart';
 part 'media_state.dart';
