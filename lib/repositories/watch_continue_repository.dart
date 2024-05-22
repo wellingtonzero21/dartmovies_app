@@ -1,10 +1,10 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
-import 'package:dart_movies_app/api/models/watch_continue_model.dart';
+import 'package:dart_movies_app/models/watch_continue_model.dart';
 
-class WatchContinueProvider {
+class WatchContinueRepository {
   final HttpAdapter httpAdater;
 
-  WatchContinueProvider({required this.httpAdater});
+  WatchContinueRepository({required this.httpAdater});
 
   Future<WatchContinueModel> getWatchContinue(int pagina) async {
     final url =

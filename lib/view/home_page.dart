@@ -1,12 +1,12 @@
-import 'package:dart_movies_app/api/models/discover_movie_model.dart';
-import 'package:dart_movies_app/api/models/movie_details_model.dart';
-import 'package:dart_movies_app/api/models/trending_movies_model.dart';
-import 'package:dart_movies_app/api/models/trending_people_model.dart';
-import 'package:dart_movies_app/api/providers/discover_movie_provider.dart';
-import 'package:dart_movies_app/api/providers/movie_details_provider.dart';
-import 'package:dart_movies_app/api/providers/trending_movie_provider.dart';
+import 'package:dart_movies_app/models/discover_movie_model.dart';
+import 'package:dart_movies_app/models/movie_details_model.dart';
+import 'package:dart_movies_app/models/trending_movies_model.dart';
+import 'package:dart_movies_app/models/trending_people_model.dart';
+import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
+import 'package:dart_movies_app/repositories/movie_details_repository.dart';
+import 'package:dart_movies_app/repositories/trending_movie_repository.dart';
 import 'package:dart_movies_app/components/recommended_list.dart';
-import 'package:dart_movies_app/model/media_model.dart';
+import 'package:dart_movies_app/models/media_model.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:dart_movies_app/view/search_page.dart';
 import 'package:flutter/material.dart';
@@ -19,14 +19,13 @@ import '../components/small_card.dart';
 import '../components/trending_movies_list.dart';
 
 class HomePage extends StatefulWidget {
-  final MovieDetailsProvider movieDetailsProvider =
-      MovieDetailsProvider(httpAdater: HttpAdapter());
-  final DiscoverMovieProvider watchContinueProvider =
-      DiscoverMovieProvider(httpAdater: HttpAdapter());
-  final TrendingMoviesProvider trendingProvider =
-      TrendingMoviesProvider(httpAdater: HttpAdapter());
-  final DiscoverMovieProvider allMoviesProvider =
-      DiscoverMovieProvider(httpAdater: HttpAdapter());
+  final MovieDetailsRepository movieDetailsProvider =
+      MovieDetailsRepository(httpAdater: HttpAdapter());
+  final DiscoverMovieRepository watchContinueProvider =
+      DiscoverMovieRepository();
+  final TrendingMoviesRepository trendingProvider =
+      TrendingMoviesRepository(httpAdater: HttpAdapter());
+  final DiscoverMovieRepository allMoviesProvider = DiscoverMovieRepository();
 
   HomePage({super.key});
 
@@ -50,10 +49,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _fetchTrendingMovies() async {
-    final trendingProvider = TrendingMoviesProvider(httpAdater: HttpAdapter());
+    final trendingProvider =
+        TrendingMoviesRepository(httpAdater: HttpAdapter());
     final trendingMoviesModel = await trendingProvider.getTrendingMovies();
 
-    final allMoviesProvider = DiscoverMovieProvider(httpAdater: HttpAdapter());
+    final allMoviesProvider = DiscoverMovieRepository();
+
     final allMoviesModel = await allMoviesProvider.getDiscoverMovie(1);
     setState(() {
       trendingMovies = trendingMoviesModel.results ?? [];

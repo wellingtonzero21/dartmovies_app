@@ -1,4 +1,4 @@
-import 'package:dart_movies_app/api/models/discover_movie_model.dart';
+import 'package:dart_movies_app/models/discover_movie_model.dart';
 import 'package:dart_movies_app/components/small_card.dart';
 import 'package:flutter/material.dart';
 

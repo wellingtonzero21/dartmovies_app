@@ -1,17 +1,16 @@
-import 'package:dart_movies_app/api/models/discover_movie_model.dart';
-import 'package:dart_movies_app/api/providers/discover_movie_provider.dart';
+import 'package:dart_movies_app/models/discover_movie_model.dart';
+import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:dart_movies_app/components/appbar_custom.dart';
 import 'package:dart_movies_app/components/research_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
-import 'package:dart_movies_app/model/enums.dart';
-import 'package:dart_movies_app/api/http_adapter.dart';
+import 'package:dart_movies_app/models/enums.dart';
 import 'package:flutter/material.dart';
-import '../model/media_model.dart';
+import '../models/media_model.dart';
 
 class SearchPage extends StatefulWidget {
   final TextEditingController controller = TextEditingController();
-  final DiscoverMovieProvider discoverMovieProvider =
-      DiscoverMovieProvider(httpAdater: HttpAdapter());
+  final DiscoverMovieRepository discoverMovieProvider =
+      DiscoverMovieRepository();
 
   SearchPage({super.key});
 

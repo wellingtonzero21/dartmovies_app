@@ -1,4 +1,4 @@
-import 'package:dart_movies_app/model/enums.dart';
+import 'package:dart_movies_app/models/enums.dart';
 
 class MediaModel {
   String title;

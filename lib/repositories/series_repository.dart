@@ -1,10 +1,10 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
-import 'package:dart_movies_app/api/models/series_model.dart';
+import 'package:dart_movies_app/models/series_model.dart';
 
-class SeriesProvider {
+class SeriesRepository {
   final HttpAdapter httpAdater;
 
-  SeriesProvider({required this.httpAdater});
+  SeriesRepository({required this.httpAdater});
 
   Future<SeriesProviderModel> getSeriesMovies() async {
     const url =

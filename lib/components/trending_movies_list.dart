@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'small_card.dart';
-import '../api/models/trending_movies_model.dart';
+import '../models/trending_movies_model.dart';
 
 class TrendingMoviesList extends StatefulWidget {
   final List<Trending> trendingMovies;

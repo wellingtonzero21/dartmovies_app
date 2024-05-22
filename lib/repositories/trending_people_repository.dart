@@ -1,10 +1,10 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
-import 'package:dart_movies_app/api/models/trending_people_model.dart';
+import 'package:dart_movies_app/models/trending_people_model.dart';
 
-class TrendingPeopleProvider {
+class TrendingPeopleRepository {
   final HttpAdapter httpAdater;
 
-  TrendingPeopleProvider({required this.httpAdater});
+  TrendingPeopleRepository({required this.httpAdater});
 
   Future<TrendingPeopleModel> getTrendingMovies() async {
     const url =

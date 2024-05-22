@@ -12,6 +12,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   animated_text_kit: ^4.2.2
   http: ^1.2.1
+  bloc: ^8.1.4
 
 dev_dependencies:
   flutter_test:

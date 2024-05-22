@@ -1,10 +1,10 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
-import 'package:dart_movies_app/api/models/discover_movie_model.dart';
+import 'package:dart_movies_app/models/discover_movie_model.dart';
 
-class SearchMovieProvider {
+class SearchMovieRepository {
   final HttpAdapter httpAdater;
 
-  SearchMovieProvider({required this.httpAdater});
+  SearchMovieRepository({required this.httpAdater});
 
   Future<DiscoverMovieModel> getSearchMovie(String text, int page) async {
     final url =
