@@ -1,3 +1,4 @@
+import 'package:dart_movies_app/models/discover_movie_model.dart';
 import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,14 +9,28 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
   DiscoverMovieRepository movieRepository = DiscoverMovieRepository();
 
   MediaBloc() : super(MediaInitial()) {
-    on<GetMediaEvent>((event, emit) async {
-      emit(MediaLoadingState());
+    on<GetMediasEvent>((event, emit) async {
+      try {
+        if (event.page == 1) {
+          emit(MediaLoadingState());
 
-      await movieRepository.getDiscoverMovie(1);
+          DiscoverMovieModel discoverMovieModel =
+              await movieRepository.getDiscoverMovie(event.page);
 
-      emit(MediaSuccessState());
+          emit(MediaSuccessState(
+              discoverMovieModel: discoverMovieModel, isAdd: false));
+        } else if (event.page > 1) {
+          DiscoverMovieModel discoverMovieModel =
+              await movieRepository.getDiscoverMovie(event.page);
+
+          emit(MediaSuccessState(
+              discoverMovieModel: discoverMovieModel, isAdd: true));
+        }
+      } catch (e) {
+        emit(MediaErrorState());
+      }
     });
 
-    on<GetDetaisMediaEvent>((event, emit) {});
+    // on<GetDetaisMediaEvent>((event, emit) {});
   }
 }

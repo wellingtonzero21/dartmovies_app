@@ -1,9 +1,9 @@
-import 'package:dart_movies_app/models/discover_movie_model.dart';
 import 'package:dart_movies_app/components/small_card.dart';
+import 'package:dart_movies_app/models/media_model.dart';
 import 'package:flutter/material.dart';
 
 class RecommendedList extends StatelessWidget {
-  final List<Movie> movie;
+  final List<MediaModel> movie;
   const RecommendedList({super.key, required this.movie});
 
   @override
@@ -15,7 +15,7 @@ class RecommendedList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: movie.length,
         itemBuilder: (context, index) {
-          Movie allMoviesModel = movie[index];
+          MediaModel allMoviesModel = movie[index];
 
           return GestureDetector(
             onTap: () {

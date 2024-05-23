@@ -1,11 +1,11 @@
-import 'package:dart_movies_app/models/discover_movie_model.dart';
+import 'package:dart_movies_app/models/media_model.dart';
 import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:dart_movies_app/components/appbar_custom.dart';
 import 'package:dart_movies_app/components/research_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
 import 'package:dart_movies_app/models/enums.dart';
 import 'package:flutter/material.dart';
-import '../models/media_model.dart';
+import '../models/media_model_v1.dart';
 
 class SearchPage extends StatefulWidget {
   final TextEditingController controller = TextEditingController();
@@ -18,8 +18,8 @@ class SearchPage extends StatefulWidget {
   SearchPageState createState() => SearchPageState();
 }
 
-MediaModel movieToMediaModel(Movie movie) {
-  return MediaModel(
+MediaModelV1 movieToMediaModel(MediaModel movie) {
+  return MediaModelV1(
     title: movie.title ?? '',
     description: movie.overview ?? '',
     urlSmallBanner: movie.posterPath ?? '',
@@ -38,8 +38,8 @@ MediaModel movieToMediaModel(Movie movie) {
 }
 
 class SearchPageState extends State<SearchPage> {
-  late List<MediaModel> filteredMediaList = [];
-  late List<Movie> movieList = [];
+  late List<MediaModelV1> filteredMediaList = [];
+  late List<MediaModel> movieList = [];
   late Future<void> _fetchMoviesFuture;
   int paginaCorrente = 1;
   final ScrollController _scrollController = ScrollController();
@@ -124,7 +124,7 @@ class SearchPageState extends State<SearchPage> {
                             ),
                             itemCount: filteredMediaList.length,
                             itemBuilder: (context, index) {
-                              MediaModel trendingMedia =
+                              MediaModelV1 trendingMedia =
                                   filteredMediaList[index];
                               return GestureDetector(
                                 onTap: () {

@@ -2,6 +2,10 @@ part of 'media_bloc.dart';
 
 abstract class MediaEvent {}
 
-final class GetMediaEvent extends MediaEvent {}
+final class GetMediasEvent extends MediaEvent {
+  final int page;
 
-final class GetDetaisMediaEvent extends MediaEvent {}
+  GetMediasEvent({required this.page});
+}
+
+// final class GetDetaisMediaEvent extends MediaEvent {}

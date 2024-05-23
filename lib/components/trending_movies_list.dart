@@ -1,9 +1,9 @@
+import 'package:dart_movies_app/models/media_model.dart';
 import 'package:flutter/material.dart';
 import 'small_card.dart';
-import '../models/trending_movies_model.dart';
 
 class TrendingMoviesList extends StatefulWidget {
-  final List<Trending> trendingMovies;
+  final List<MediaModel> trendingMovies;
   const TrendingMoviesList({
     super.key,
     required this.trendingMovies,
@@ -22,7 +22,7 @@ class _TrendingMoviesListState extends State<TrendingMoviesList> {
         scrollDirection: Axis.horizontal,
         itemCount: widget.trendingMovies.length,
         itemBuilder: (context, index) {
-          Trending trendingMovie = widget.trendingMovies[index];
+          MediaModel trendingMovie = widget.trendingMovies[index];
 
           return GestureDetector(
             onTap: () {
