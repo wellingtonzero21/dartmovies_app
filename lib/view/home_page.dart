@@ -253,6 +253,7 @@ class _HomePageState extends State<HomePage>
                     }
                   },
                 ),
+                //TODO: Criar lista de filmes ou series favorita se for vazia não exibir
                 const Padding(
                   padding: EdgeInsets.only(left: 15, right: 15, top: 20),
                   child: Text(
@@ -325,9 +326,9 @@ class _HomePageState extends State<HomePage>
             },
             builder: (context, state) {
               if (state is MediaLoadingState) {
-                return const Center(
+                return Center(
                   child: CircularProgressIndicator(
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 );
               }

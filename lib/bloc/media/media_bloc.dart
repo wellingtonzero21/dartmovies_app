@@ -31,6 +31,14 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
       }
     });
 
-    // on<GetDetaisMediaEvent>((event, emit) {});
+    //TODO: Criar evento para trazer series já pereparado para paginação
+
+    //TODO: Criar evento para trazer banner inicio, filmes continue assistindo, em alta, recomendados e atores.
+
+    // on<GetDetaisMediaEvent>((event, emit) {}); //TODO: evento para trazer detalhes da midia
+
+    //TODO: Criar evento para favoritar
+
+    //TODO: Criar evento para trazer os filmes favoritados
   }
 }
