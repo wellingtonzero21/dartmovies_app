@@ -46,6 +46,8 @@ class _HomePageState extends State<HomePage>
   late List<People> allPeople = [];
   late List<MediaModel> allMovies = [];
   String imageInicioTop = '';
+  final ScrollController _scrollControllerMovies = ScrollController();
+  int pageMovie = 1;
 
   @override
   void initState() {
@@ -57,11 +59,21 @@ class _HomePageState extends State<HomePage>
     _tabController.addListener(_handleTabSelection);
 
     mediaBloc = BlocProvider.of<MediaBloc>(context);
+    _scrollControllerMovies.addListener(_scrollListener);
   }
 
   void _handleTabSelection() {
     if (_tabController.index == 1) {
-      mediaBloc.add(GetMediasEvent(page: 1));
+      pageMovie = 1;
+      mediaBloc.add(GetMediasEvent(page: pageMovie));
+    }
+  }
+
+  void _scrollListener() {
+    if (_scrollControllerMovies.position.pixels ==
+        _scrollControllerMovies.position.maxScrollExtent) {
+      pageMovie++;
+      mediaBloc.add(GetMediasEvent(page: pageMovie));
     }
   }
 
@@ -337,6 +349,7 @@ class _HomePageState extends State<HomePage>
                 children: [
                   Expanded(
                     child: GridView.builder(
+                      controller: _scrollControllerMovies,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
@@ -367,11 +380,6 @@ class _HomePageState extends State<HomePage>
                       },
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        mediaBloc.add(GetMediasEvent(page: 2));
-                      },
-                      child: Text('ver mais filmes'))
                 ],
               );
             },
