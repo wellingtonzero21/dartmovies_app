@@ -1,5 +1,14 @@
+import 'dart:developer';
+
+import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:dart_movies_app/models/discover_movie_model.dart';
+import 'package:dart_movies_app/models/media_model.dart';
+import 'package:dart_movies_app/models/trending_movies_model.dart';
+import 'package:dart_movies_app/models/trending_people_model.dart';
 import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
+import 'package:dart_movies_app/repositories/recommended_movie_repository.dart';
+import 'package:dart_movies_app/repositories/trending_movie_repository.dart';
+import 'package:dart_movies_app/repositories/trending_people_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'media_event.dart';
@@ -7,6 +16,13 @@ part 'media_state.dart';
 
 class MediaBloc extends Bloc<MediaEvent, MediaState> {
   DiscoverMovieRepository movieRepository = DiscoverMovieRepository();
+  TrendingMoviesRepository trendingRepository =
+      TrendingMoviesRepository(httpAdater: HttpAdapter());
+  DiscoverMovieRepository watchContinueRepository = DiscoverMovieRepository();
+  RecommendedMovieRepository recommendedMovieRepository =
+      RecommendedMovieRepository();
+  TrendingPeopleRepository trendingPeopleRepository =
+      TrendingPeopleRepository(httpAdater: HttpAdapter());
 
   MediaBloc() : super(MediaInitial()) {
     on<GetMediasEvent>((event, emit) async {
@@ -30,6 +46,39 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
         emit(MediaErrorState());
       }
     });
+
+    on<FetchInfosHomePage>(
+      (event, emit) async {
+        try {
+          emit(FetchInfosLoading());
+
+          TrendingMoviesModel trendingMoviesModel =
+              await trendingRepository.getTrendingMovies();
+          String urlBannerHome =
+              'https://image.tmdb.org/t/p/w300${trendingMoviesModel.results?.first.backdropPath}';
+
+          DiscoverMovieModel watchContinueModel =
+              await watchContinueRepository.getDiscoverMovie(1);
+
+          DiscoverMovieModel recommendedsMoviesModel =
+              await recommendedMovieRepository.getRecommendedMovie();
+
+          TrendingPeopleModel trendingPeopleModel =
+              await trendingPeopleRepository.getTrendingPeople();
+
+          emit(FetchInfosSuccess(
+            trendingMovies: trendingMoviesModel.results ?? [],
+            watchContinueMovies: watchContinueModel.results ?? [],
+            recommendedMovies: recommendedsMoviesModel.results ?? [],
+            people: trendingPeopleModel.results ?? [],
+            urlBannerHome: urlBannerHome,
+          ));
+        } catch (e) {
+          log('deu erro');
+          emit(FetchInfosError());
+        }
+      },
+    );
 
     //TODO: Criar evento para trazer series já pereparado para paginação
 

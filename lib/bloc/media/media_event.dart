@@ -9,3 +9,5 @@ final class GetMediasEvent extends MediaEvent {
 }
 
 // final class GetDetaisMediaEvent extends MediaEvent {}
+
+final class FetchInfosHomePage extends MediaEvent {}

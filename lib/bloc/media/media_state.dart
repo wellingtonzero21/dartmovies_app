@@ -14,3 +14,24 @@ final class MediaSuccessState extends MediaState {
 }
 
 final class MediaErrorState extends MediaState {}
+
+final class FetchInfosLoading extends MediaState {}
+
+final class FetchInfosSuccess extends MediaState {
+  final List<MediaModel> trendingMovies;
+  final List<MediaModel> watchContinueMovies;
+  final List<MediaModel> recommendedMovies;
+  final List<People> people;
+
+  final String urlBannerHome;
+
+  FetchInfosSuccess({
+    required this.trendingMovies,
+    required this.urlBannerHome,
+    required this.watchContinueMovies,
+    required this.recommendedMovies,
+    required this.people,
+  });
+}
+
+final class FetchInfosError extends MediaState {}
