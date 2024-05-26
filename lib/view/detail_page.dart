@@ -8,6 +8,10 @@ import 'package:dart_movies_app/model/media_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'dart:convert';
+import 'dart:io'; // Import para trabalhar com arquivos
+import 'package:path_provider/path_provider.dart'; // Import para obter o diretório de documentos
+
 class DetailPage extends StatefulWidget {
   final DiscoverMovieProvider allMoviesProvider =
       DiscoverMovieProvider(httpAdater: HttpAdapter());
@@ -41,6 +45,23 @@ class _DetailPageState extends State<DetailPage> {
       moviedetailsList = movieDetailsModel;
     });
     return;
+  }
+
+  void _saveMovieDetailsToJson(MovieDetailsModel movie) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/movie_details.json');
+      final movieData = {
+        'id': movie.id,
+        'title': movie.title,
+        'release_date': movie.releaseDate?.toIso8601String(),
+      };
+
+      await file.writeAsString(jsonEncode(movieData));
+      print("Dados salvos no arquivo JSON: $movieData");
+    } catch (e) {
+      print("Erro ao salvar dados no arquivo JSON: $e");
+    }
   }
 
   @override
@@ -231,6 +252,15 @@ class _DetailPageState extends State<DetailPage> {
                             fontSize: 20,
                             fontFamily: 'Poppins-SemiBold',
                             color: Colors.white),
+                      ),
+                      // Adicionar um botão para salvar os detalhes em JSON
+                      ElevatedButton(
+                        onPressed: () {
+                          if (moviedetailsList != null) {
+                            _saveMovieDetailsToJson(moviedetailsList!);
+                          }
+                        },
+                        child: Text("Salvar em favoritos"),
                       ),
                     ],
                   ),
