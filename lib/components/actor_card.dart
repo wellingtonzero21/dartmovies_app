@@ -24,7 +24,7 @@ class ActorCard extends StatelessWidget {
           Text(
             nome,
             textAlign: TextAlign.center,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
         ],

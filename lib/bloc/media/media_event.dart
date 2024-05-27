@@ -26,3 +26,5 @@ class SearchMovieEvent extends MediaEvent {
   SearchMovieEvent(this.value);
 }
 // final class GetDetaisMediaEvent extends MediaEvent {}
+
+final class FetchInfosHomePage extends MediaEvent {}
