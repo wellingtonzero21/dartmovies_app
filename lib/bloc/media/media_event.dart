@@ -8,4 +8,9 @@ final class GetMediasEvent extends MediaEvent {
   GetMediasEvent({required this.page});
 }
 
-// final class GetDetaisMediaEvent extends MediaEvent {}
+final class GetDetaisMediaEvent extends MediaEvent {
+  final int id;
+  final bool isSerie;
+
+  GetDetaisMediaEvent({required this.id, this.isSerie = false});
+}

@@ -14,3 +14,14 @@ final class MediaSuccessState extends MediaState {
 }
 
 final class MediaErrorState extends MediaState {}
+
+final class DetailLoadingState extends MediaState {}
+
+final class DetailSucessState extends MediaState {
+  final MovieDetailsModel? movieDetailsModel;
+  final SerieDetailsModel? serieDetailsModel;
+
+  DetailSucessState({this.movieDetailsModel, this.serieDetailsModel});
+}
+
+final class DetailErrorState extends MediaState {}
