@@ -25,6 +25,15 @@ class _HomePageState extends State<HomePage>
   late TabController _tabController;
   late MediaBloc mediaBloc;
 
+
+  late List<MovieDetailsModel> moviedetailsList = [];
+  late List<MediaModel> movieListWC = [];
+  late List<MediaModel> trendingMovies = [];
+  late List<People> allPeople = [];
+  late List<MediaModel> allMovies = [];
+  String imageInicioTop = '';
+  final ScrollController _scrollControllerMovies = ScrollController();
+  int pageMovie = 1;
   List<MovieDetailsModel> moviedetailsList = [];
   List<MediaModel> watchContinueMovies = [];
   List<MediaModel> trendingMovies = [];
@@ -44,12 +53,24 @@ class _HomePageState extends State<HomePage>
 
     mediaBloc = BlocProvider.of<MediaBloc>(context);
 
+    _scrollControllerMovies.addListener(_scrollListener);
+
     mediaBloc.add(FetchInfosHomePage());
+
   }
 
   void _handleTabSelection() {
     if (_tabController.index == 1) {
-      mediaBloc.add(GetMediasEvent(page: 1));
+      pageMovie = 1;
+      mediaBloc.add(GetMediasEvent(page: pageMovie));
+    }
+  }
+
+  void _scrollListener() {
+    if (_scrollControllerMovies.position.pixels ==
+        _scrollControllerMovies.position.maxScrollExtent) {
+      pageMovie++;
+      mediaBloc.add(GetMediasEvent(page: pageMovie));
     }
   }
 
@@ -293,18 +314,20 @@ class _HomePageState extends State<HomePage>
                   );
                 }
 
-                return Column(
-                  children: [
-                    Expanded(
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 35 / 50,
-                        ),
-                        itemCount: allMovies.length,
-                        itemBuilder: (context, index) {
-                          MediaModel movies = allMovies[index];
+              return Column(
+                children: [
+                  Expanded(
+                    child: GridView.builder(
+                      controller: _scrollControllerMovies,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 35 / 50,
+                      ),
+                      itemCount: allMovies.length,
+                      itemBuilder: (context, index) {
+                        MediaModel movies = allMovies[index];
+
 
                           return GestureDetector(
                             onTap: () {
@@ -327,15 +350,13 @@ class _HomePageState extends State<HomePage>
                         },
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        mediaBloc.add(GetMediasEvent(page: 5));
-                      },
-                      child: const Text('ver mais filmes'),
-                    ),
-                  ],
-                );
-              },
+
+                  ),
+                ],
+              );
+            },
+          ),
+
             ),
             GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
