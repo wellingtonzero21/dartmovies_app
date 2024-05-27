@@ -15,6 +15,16 @@ final class MediaSuccessState extends MediaState {
 
 final class MediaErrorState extends MediaState {}
 
+final class DetailLoadingState extends MediaState {}
+
+final class DetailSucessState extends MediaState {
+  final MovieDetailsModel? movieDetailsModel;
+  final SerieDetailsModel? serieDetailsModel;
+
+  DetailSucessState({this.movieDetailsModel, this.serieDetailsModel});
+}
+
+final class DetailErrorState extends MediaState {}
 
 final class FetchInfosLoading extends MediaState {}
 
@@ -36,7 +46,6 @@ final class FetchInfosSuccess extends MediaState {
 }
 
 final class FetchInfosError extends MediaState {}
-
 
 final class SearchLoadingState extends MediaState {}
 
