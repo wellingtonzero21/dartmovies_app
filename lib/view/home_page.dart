@@ -268,7 +268,10 @@ class _HomePageState extends State<HomePage>
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: TrendingMoviesList(trendingMovies: trendingMovies),
+                child: TrendingMoviesList(
+                  trendingMovies: trendingMovies,
+                  recommendeds: recommendedMovies,
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.only(left: 15, right: 15, top: 20),
@@ -279,7 +282,7 @@ class _HomePageState extends State<HomePage>
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: RecommendedList(movie: recommendedMovies),
+                child: RecommendedList(recommendedsMovies: recommendedMovies),
               ),
               const Padding(
                 padding: EdgeInsets.only(left: 15, right: 15, top: 20),
@@ -366,7 +369,10 @@ class _HomePageState extends State<HomePage>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailPage(movieModel: movie),
+                    builder: (context) => DetailPage(
+                      movieModel: movie,
+                      recommendeds: recommendedMovies,
+                    ),
                   ),
                 );
               },
@@ -493,7 +499,10 @@ class _HomePageState extends State<HomePage>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailPage(movieModel: movie),
+                    builder: (context) => DetailPage(
+                      movieModel: movie,
+                      recommendeds: recommendedMovies,
+                    ),
                   ),
                 );
               },

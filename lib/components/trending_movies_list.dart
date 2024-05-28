@@ -5,9 +5,12 @@ import 'small_card.dart';
 
 class TrendingMoviesList extends StatefulWidget {
   final List<MovieModel> trendingMovies;
+  final List<MovieModel> recommendeds;
+
   const TrendingMoviesList({
     super.key,
     required this.trendingMovies,
+    required this.recommendeds,
   });
 
   @override
@@ -32,6 +35,7 @@ class _TrendingMoviesListState extends State<TrendingMoviesList> {
                 MaterialPageRoute(
                   builder: (context) => DetailPage(
                     movieModel: trendingMovie,
+                    recommendeds: widget.recommendeds,
                   ),
                 ),
               );

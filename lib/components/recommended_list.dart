@@ -4,8 +4,8 @@ import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class RecommendedList extends StatelessWidget {
-  final List<MovieModel> movie;
-  const RecommendedList({super.key, required this.movie});
+  final List<MovieModel> recommendedsMovies;
+  const RecommendedList({super.key, required this.recommendedsMovies});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +14,9 @@ class RecommendedList extends StatelessWidget {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: movie.length,
+        itemCount: recommendedsMovies.length,
         itemBuilder: (context, index) {
-          MovieModel recommendedMovie = movie[index];
+          MovieModel recommendedMovie = recommendedsMovies[index];
 
           return GestureDetector(
             onTap: () {
@@ -25,12 +25,14 @@ class RecommendedList extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) => DetailPage(
                           movieModel: recommendedMovie,
+                          recommendeds: recommendedsMovies,
                         )),
               );
             },
             child: Padding(
               padding: EdgeInsets.only(
-                  left: recommendedMovie == movie.first ? 15 : 0, right: 15),
+                  left: recommendedMovie == recommendedsMovies.first ? 15 : 0,
+                  right: 15),
               child: SmallCard(
                 imageUrl:
                     'https://media.themoviedb.org/t/p/w220_and_h330_face${recommendedMovie.posterPath}',

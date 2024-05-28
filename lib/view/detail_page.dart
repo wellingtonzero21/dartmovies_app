@@ -1,3 +1,4 @@
+import 'package:dart_movies_app/components/recommended_list.dart';
 import 'package:dart_movies_app/others/service_hive.dart';
 import 'package:dart_movies_app/repositories/movie_details_repository.dart';
 import 'package:dart_movies_app/models/serie_details_model.dart';
@@ -12,11 +13,19 @@ import 'package:flutter/material.dart';
 class DetailPage extends StatefulWidget {
   final MovieDetailsRepository movieDetailsProvider = MovieDetailsRepository();
   final MediaBloc mediaBloc = MediaBloc();
+
+  final List<MovieModel> recommendeds;
+
   final bool isSerie;
 
   final MovieModel movieModel;
 
-  DetailPage({super.key, this.isSerie = false, required this.movieModel});
+  DetailPage({
+    super.key,
+    this.isSerie = false,
+    required this.movieModel,
+    required this.recommendeds,
+  });
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -288,47 +297,24 @@ class _DetailPageState extends State<DetailPage> {
                                 ],
                               ),
                               const SizedBox(height: 25),
-                              // const Text(
-                              //   'Recomendados',
-                              //   style: TextStyle(
-                              //       fontSize: 20,
-                              //       fontFamily: 'Poppins-SemiBold',
-                              //       color: Colors.white),
-                              // ),
+                              const Text(
+                                'Recomendados',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Poppins-SemiBold',
+                                    color: Colors.white),
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(top: 20),
-                    //   child: SizedBox(
-                    //     height: 200,
-                    //     child: ListView.builder(
-                    //       shrinkWrap: true,
-                    //       scrollDirection: Axis.horizontal,
-                    //       itemCount: allMovies.length,
-                    //       itemBuilder: (context, index) {
-                    //         //Movie movies = allMovies[index];
-
-                    //         return GestureDetector(
-                    //           onTap: () {
-                    //             /* Navigator.push(
-                    //                   context,
-                    //                   MaterialPageRoute(
-                    //                       builder: (context) => DetailPage(
-                    //                             media: recommendedMedia,
-                    //                           )),
-                    //                 ); */
-                    //           },
-                    //           child: RecommendedList(
-                    //             movie: allMovies,
-                    //           ),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: RecommendedList(
+                        recommendedsMovies: widget.recommendeds,
+                      ),
+                    ),
                     const SizedBox(
                       height: 20,
                     )
