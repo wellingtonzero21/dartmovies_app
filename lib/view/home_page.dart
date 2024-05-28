@@ -1,6 +1,7 @@
 import 'package:dart_movies_app/bloc/media/media_bloc.dart';
 import 'package:dart_movies_app/models/media_model.dart';
 import 'package:dart_movies_app/models/movie_details_model.dart';
+import 'package:dart_movies_app/models/series_model.dart';
 import 'package:dart_movies_app/models/trending_people_model.dart';
 import 'package:dart_movies_app/components/recommended_list.dart';
 import 'package:dart_movies_app/view/detail_page.dart';
@@ -25,52 +26,65 @@ class _HomePageState extends State<HomePage>
   late TabController _tabController;
   late MediaBloc mediaBloc;
 
-
-  late List<MovieDetailsModel> moviedetailsList = [];
-  late List<MediaModel> movieListWC = [];
-  late List<MediaModel> trendingMovies = [];
-  late List<People> allPeople = [];
-  late List<MediaModel> allMovies = [];
-  String imageInicioTop = '';
-  final ScrollController _scrollControllerMovies = ScrollController();
-  int pageMovie = 1;
   List<MovieDetailsModel> moviedetailsList = [];
-  List<MediaModel> watchContinueMovies = [];
-  List<MediaModel> trendingMovies = [];
-  List<MediaModel> recommendedMovies = [];
+  List<MovieModel> watchContinueMovies = [];
+  List<MovieModel> trendingMovies = [];
+  List<MovieModel> recommendedMovies = [];
   List<People> allPeople = [];
-  List<MediaModel> allMovies = [];
-  List<MediaModel> allSeries = [];
+  List<MovieModel> allMovies = [];
+  List<SeriesModel> allSeries = [];
+  List<MovieModel> favoritedMovies = [];
+
+  final ScrollController _scrollControllerMovies = ScrollController();
+  final ScrollController _scrollControllerSeries = ScrollController();
+
+  int pageMovie = 1;
+  int pageSerie = 1;
 
   String urlBannerHome = '';
 
   @override
   void initState() {
     super.initState();
-
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_handleTabSelection);
 
     mediaBloc = BlocProvider.of<MediaBloc>(context);
-
-    _scrollControllerMovies.addListener(_scrollListener);
+    _scrollControllerMovies.addListener(_scrollListenerMovies);
+    _scrollControllerSeries.addListener(_scrollListenerSeries);
 
     mediaBloc.add(FetchInfosHomePage());
-
   }
 
   void _handleTabSelection() {
     if (_tabController.index == 1) {
       pageMovie = 1;
-      mediaBloc.add(GetMediasEvent(page: pageMovie));
+      mediaBloc.add(GetMoviesEvent(page: pageMovie));
+    }
+
+    if (_tabController.index == 2) {
+      pageSerie = 1;
+      mediaBloc.add(GetSeriesEvent(page: pageSerie));
+    }
+
+    if (_tabController.index == 3) {
+      mediaBloc.add(GetFavoritedMovies());
     }
   }
 
-  void _scrollListener() {
+  void _scrollListenerMovies() {
     if (_scrollControllerMovies.position.pixels ==
         _scrollControllerMovies.position.maxScrollExtent) {
       pageMovie++;
-      mediaBloc.add(GetMediasEvent(page: pageMovie));
+      mediaBloc.add(GetMoviesEvent(page: pageMovie));
+    }
+  }
+
+  void _scrollListenerSeries() {
+    if (_scrollControllerSeries.position.pixels ==
+        _scrollControllerSeries.position.maxScrollExtent) {
+      pageSerie++;
+      mediaBloc.add(GetSeriesEvent(page: pageSerie));
     }
   }
 
@@ -105,20 +119,21 @@ class _HomePageState extends State<HomePage>
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               RotatedBox(
-                  quarterTurns: 1,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SearchPage()),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                  )),
+                quarterTurns: 1,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SearchPage()),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                ),
+              ),
               const Padding(
                 padding: EdgeInsets.only(left: 6, right: 15, bottom: 6),
                 child: SizedBox(
@@ -135,6 +150,7 @@ class _HomePageState extends State<HomePage>
           ),
         ],
         bottom: TabBar(
+          labelPadding: EdgeInsets.zero,
           controller: _tabController,
           indicator: BoxDecoration(
             color: Theme.of(context).colorScheme.secondary,
@@ -154,242 +170,344 @@ class _HomePageState extends State<HomePage>
             fontFamily: 'Poppins-Bold',
             fontSize: 17,
           ),
+          // isScrollable: true,
           tabs: const [
             Tab(text: 'Início'),
             Tab(text: 'Filmes'),
             Tab(text: 'Séries'),
+            Tab(text: 'Favoritos'),
           ],
         ),
       ),
       body: BlocListener<MediaBloc, MediaState>(
         listener: (context, state) {
           if (state is FetchInfosSuccess) {
-            trendingMovies = state.trendingMovies;
-            watchContinueMovies = state.watchContinueMovies;
-            recommendedMovies = state.recommendedMovies;
-            allPeople = state.people;
-            urlBannerHome = state.urlBannerHome;
+            setState(() {
+              trendingMovies = state.trendingMovies;
+              watchContinueMovies = state.watchContinueMovies;
+              recommendedMovies = state.recommendedMovies;
+              allPeople = state.people;
+              urlBannerHome = state.urlBannerHome;
+            });
           }
         },
         child: TabBarView(
           controller: _tabController,
           children: [
-            BlocBuilder<MediaBloc, MediaState>(
-              builder: (context, state) {
-                if (state is FetchInfosLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  );
-                }
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Visibility(
-                        visible: urlBannerHome.isNotEmpty,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, top: 20),
-                          child: BannerCard(url: urlBannerHome),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 15, right: 15, top: 20),
-                        child: Text(
-                          'Continuar assistindo',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: SizedBox(
-                          height: 160,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: watchContinueMovies.length,
-                            itemBuilder: (context, index) {
-                              MediaModel watchedMedia =
-                                  watchContinueMovies[index];
-
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    left: watchedMedia ==
-                                            watchContinueMovies.first
-                                        ? 15
-                                        : 0,
-                                    right: 20),
-                                child: LongCard(
-                                  imageUrl:
-                                      'https://image.tmdb.org/t/p/w200${watchedMedia.backdropPath}',
-                                  width: 280,
-                                  progress: 0.2,
-                                  isWatchedMedia: true,
-                                  title: watchedMedia.title ?? '',
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 15, right: 15, top: 20),
-                        child: Text(
-                          'Em alta',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: TrendingMoviesList(
-                          trendingMovies: trendingMovies,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 15, right: 15, top: 20),
-                        child: Text(
-                          'Recomendados',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: RecommendedList(movie: recommendedMovies),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 15, right: 15, top: 20),
-                        child: Text(
-                          'Atores populares',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 140,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: allPeople.length,
-                            itemBuilder: (context, index) {
-                              People people = allPeople[index];
-
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  left: allPeople.first == people ? 15 : 0,
-                                  right: 15,
-                                ),
-                                child: ActorCard(
-                                  imageUrl:
-                                      'https://media.themoviedb.org/t/p/w220_and_h330_face${people.profilePath}',
-                                  nome: people.name ?? '',
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            BlocConsumer<MediaBloc, MediaState>(
-              listener: (context, state) {
-                if (state is MediaSuccessState) {
-                  if (state.isAdd) {
-                    allMovies.addAll(state.discoverMovieModel.results ?? []);
-                  } else {
-                    allMovies = state.discoverMovieModel.results ?? [];
-                  }
-                }
-              },
-              builder: (context, state) {
-                if (state is MediaLoadingState) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  );
-                }
-
-              return Column(
-                children: [
-                  Expanded(
-                    child: GridView.builder(
-                      controller: _scrollControllerMovies,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        childAspectRatio: 35 / 50,
-                      ),
-                      itemCount: allMovies.length,
-                      itemBuilder: (context, index) {
-                        MediaModel movies = allMovies[index];
-
-
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      DetailPage(id: movies.id ?? 0),
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(6),
-                              child: SmallCard(
-                                imageUrl:
-                                    'https://media.themoviedb.org/t/p/w220_and_h330_face${movies.posterPath}',
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-
-                  ),
-                ],
-              );
-            },
-          ),
-
-            ),
-            GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 35 / 50,
-              ),
-              itemCount: allSeries.length,
-              itemBuilder: (context, index) {
-                MediaModel movie = allSeries[index];
-
-                return GestureDetector(
-                  onTap: () {
-                    /* Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetailPage(
-                                        media: movies,
-                                      )),
-                            ); */
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: SmallCard(
-                      imageUrl:
-                          "https://media.themoviedb.org/t/p/w220_and_h330_face${movie.posterPath}",
-                    ),
-                  ),
-                );
-              },
-            ),
+            _buildHomeTab(context),
+            _buildMoviesTab(context),
+            _buildSeriesTab(context),
+            _buildFavoritedTab(context),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildHomeTab(BuildContext context) {
+    return BlocBuilder<MediaBloc, MediaState>(
+      builder: (context, state) {
+        if (state is FetchInfosLoading) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          );
+        }
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Visibility(
+                visible: urlBannerHome.isNotEmpty,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+                  child: BannerCard(url: urlBannerHome),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: Text(
+                  'Continuar assistindo',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  height: 160,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: watchContinueMovies.length,
+                    itemBuilder: (context, index) {
+                      MovieModel watchedMedia = watchContinueMovies[index];
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          left: index == 0 ? 15 : 0,
+                          right: 20,
+                        ),
+                        child: LongCard(
+                          imageUrl:
+                              'https://image.tmdb.org/t/p/w200${watchedMedia.backdropPath}',
+                          width: 280,
+                          progress: 0.2,
+                          isWatchedMedia: true,
+                          title: watchedMedia.title ?? '',
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: Text(
+                  'Em alta',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: TrendingMoviesList(trendingMovies: trendingMovies),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: Text(
+                  'Recomendados',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: RecommendedList(movie: recommendedMovies),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, top: 20),
+                child: Text(
+                  'Atores populares',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 140,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: allPeople.length,
+                    itemBuilder: (context, index) {
+                      People people = allPeople[index];
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          left: index == 0 ? 15 : 0,
+                          right: 15,
+                        ),
+                        child: ActorCard(
+                          imageUrl:
+                              'https://media.themoviedb.org/t/p/w220_and_h330_face${people.profilePath}',
+                          nome: people.name ?? '',
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMoviesTab(BuildContext context) {
+    return BlocConsumer<MediaBloc, MediaState>(
+      listener: (context, state) {
+        if (state is MoviesSuccessState) {
+          if (state.isAdd) {
+            allMovies.addAll(state.discoverMovieModel.results ?? []);
+          } else {
+            allMovies = state.discoverMovieModel.results ?? [];
+          }
+        }
+      },
+      builder: (context, state) {
+        if (state is MoviesLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          );
+        }
+
+        if (allMovies.isEmpty) {
+          return const Center(
+            child: Text(
+              'Nenhum filme encontrado.',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
+        }
+
+        return GridView.builder(
+          controller: _scrollControllerMovies,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 35 / 50,
+          ),
+          itemCount: allMovies.length,
+          itemBuilder: (context, index) {
+            MovieModel movie = allMovies[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailPage(movieModel: movie),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: SmallCard(
+                  imageUrl:
+                      'https://media.themoviedb.org/t/p/w220_and_h330_face${movie.posterPath}',
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSeriesTab(BuildContext context) {
+    return BlocConsumer<MediaBloc, MediaState>(
+      listener: (context, state) {
+        if (state is SeriesSuccessState) {
+          if (state.isAdd) {
+            allSeries.addAll(state.series);
+          } else {
+            allSeries = state.series;
+          }
+        }
+      },
+      builder: (context, state) {
+        if (state is SeriesLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          );
+        }
+
+        if (allSeries.isEmpty) {
+          return const Center(
+            child: Text(
+              'Nenhuma serie encontrada.',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
+        }
+
+        return GridView.builder(
+          controller: _scrollControllerSeries,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 35 / 50,
+          ),
+          itemCount: allSeries.length,
+          itemBuilder: (context, index) {
+            SeriesModel serie = allSeries[index];
+            return GestureDetector(
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => DetailPage(
+                //       id: serie.id ?? 0,
+                //       isSerie: true,
+                //     ),
+                //   ),
+                // );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: SmallCard(
+                  imageUrl:
+                      "https://media.themoviedb.org/t/p/w220_and_h330_face${serie.posterPath}",
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildFavoritedTab(BuildContext context) {
+    return BlocConsumer<MediaBloc, MediaState>(
+      listener: (context, state) {
+        if (state is MoviesFavoritedSuccess) {
+          favoritedMovies = state.movies;
+        }
+      },
+      builder: (context, state) {
+        if (state is MoviesFavoritedLoading) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          );
+        }
+        if (favoritedMovies.isEmpty) {
+          return const Center(
+            child: Text(
+              'Nenhum filme favorito encontrado.',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
+        }
+
+        return GridView.builder(
+          controller: _scrollControllerMovies,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 35 / 50,
+          ),
+          itemCount: favoritedMovies.length,
+          itemBuilder: (context, index) {
+            MovieModel movie = favoritedMovies[index];
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailPage(movieModel: movie),
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: SmallCard(
+                  imageUrl:
+                      'https://media.themoviedb.org/t/p/w220_and_h330_face${movie.posterPath}',
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

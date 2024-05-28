@@ -4,10 +4,8 @@ import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:dart_movies_app/components/appbar_custom.dart';
 import 'package:dart_movies_app/components/research_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
-import 'package:dart_movies_app/models/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../models/media_model_v1.dart';
 
 class SearchPage extends StatefulWidget {
   final TextEditingController controller = TextEditingController();
@@ -99,8 +97,9 @@ class SearchPageState extends State<SearchPage> {
                               ),
                               itemCount: state.discoverMovieModel.length,
                               itemBuilder: (context, index) {
-                                MediaModel trendingMedia =
+                                MovieModel trendingMedia =
                                     state.discoverMovieModel[index];
+
                                 return GestureDetector(
                                   onTap: () {},
                                   child: Padding(

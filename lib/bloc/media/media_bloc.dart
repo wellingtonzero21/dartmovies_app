@@ -1,17 +1,18 @@
-import 'dart:developer';
-
 import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:dart_movies_app/models/discover_movie_model.dart';
 import 'package:dart_movies_app/models/movie_details_model.dart';
 import 'package:dart_movies_app/models/serie_details_model.dart';
+import 'package:dart_movies_app/models/discover_series_model.dart';
+import 'package:dart_movies_app/models/series_model.dart';
+import 'package:dart_movies_app/others/service_hive.dart';
 import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:dart_movies_app/repositories/movie_details_repository.dart';
 import 'package:dart_movies_app/repositories/series_details.dart';
 import 'package:dart_movies_app/models/media_model.dart';
 import 'package:dart_movies_app/models/trending_movies_model.dart';
 import 'package:dart_movies_app/models/trending_people_model.dart';
-import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:dart_movies_app/repositories/recommended_movie_repository.dart';
+import 'package:dart_movies_app/repositories/series_repository.dart';
 import 'package:dart_movies_app/repositories/trending_movie_repository.dart';
 import 'package:dart_movies_app/repositories/trending_people_repository.dart';
 import 'package:dart_movies_app/repositories/search_movie_repository.dart';
@@ -21,9 +22,7 @@ part 'media_event.dart';
 part 'media_state.dart';
 
 class MediaBloc extends Bloc<MediaEvent, MediaState> {
-
   DiscoverMovieRepository movieRepository = DiscoverMovieRepository();
-
   MovieDetailsRepository movieDetailsRepository = MovieDetailsRepository();
   SerieDetailsRepository serieDetailsRepository = SerieDetailsRepository();
   TrendingMoviesRepository trendingRepository =
@@ -33,32 +32,58 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
       RecommendedMovieRepository();
   TrendingPeopleRepository trendingPeopleRepository =
       TrendingPeopleRepository(httpAdater: HttpAdapter());
-  final SearchMovieRepository searchRepository = SearchMovieRepository();
-  late List<MediaModel> movieList = [];
+  SearchMovieRepository searchRepository = SearchMovieRepository();
+  SeriesRepository seriesRepository =
+      SeriesRepository(httpAdater: HttpAdapter());
+
+  ServiceHive serviceHive = ServiceHive();
+
+  late List<MovieModel> movieList = [];
 
   MediaBloc() : super(MediaInitial()) {
-    on<GetMediasEvent>((event, emit) async {
+    on<GetMoviesEvent>((event, emit) async {
       try {
         if (event.page == 1) {
-          emit(MediaLoadingState());
+          emit(MoviesLoadingState());
 
           DiscoverMovieModel discoverMovieModel =
               await movieRepository.getDiscoverMovie(event.page);
 
-          emit(MediaSuccessState(
+          emit(MoviesSuccessState(
               discoverMovieModel: discoverMovieModel, isAdd: false));
         } else if (event.page > 1) {
           DiscoverMovieModel discoverMovieModel =
               await movieRepository.getDiscoverMovie(event.page);
 
-          emit(MediaSuccessState(
+          emit(MoviesSuccessState(
               discoverMovieModel: discoverMovieModel, isAdd: true));
         }
       } catch (e) {
-        emit(MediaErrorState());
+        emit(MoviesErrorState());
       }
     });
 
+    on<GetSeriesEvent>((event, emit) async {
+      try {
+        if (event.page == 1) {
+          emit(SeriesLoadingState());
+
+          DiscoverSeriesModel seriesModel =
+              await seriesRepository.getSeries(event.page);
+
+          emit(SeriesSuccessState(
+              series: seriesModel.results ?? [], isAdd: false));
+        } else if (event.page > 1) {
+          DiscoverSeriesModel seriesModel =
+              await seriesRepository.getSeries(event.page);
+
+          emit(SeriesSuccessState(
+              series: seriesModel.results ?? [], isAdd: true));
+        }
+      } catch (e) {
+        emit(SeriesErrorState());
+      }
+    });
 
     on<FetchInfosHomePage>(
       (event, emit) async {
@@ -87,44 +112,47 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
             urlBannerHome: urlBannerHome,
           ));
         } catch (e) {
-          log('deu erro');
           emit(FetchInfosError());
         }
       },
     );
 
-
     on<FetchMovies>(_onFetchMovies);
     on<LoadMoreMovies>(_onLoadMoreMovies);
     on<SearchMovieEvent>(_onSearchMovies);
 
-    //TODO: Criar evento para trazer series já pereparado para paginação
+    on<GetDetaisMediaEvent>(
+      (event, emit) async {
+        try {
+          emit(DetailLoadingState());
 
-    //TODO: Criar evento para trazer banner inicio, filmes continue assistindo, em alta, recomendados e atores.
+          if (event.isSerie == true) {
+            SerieDetailsModel serieDetailsModel =
+                await serieDetailsRepository.getSerieDetail(event.id);
 
-    on<GetDetaisMediaEvent>((event, emit) async {
-      try {
-        emit(DetailLoadingState());
+            emit(DetailSucessState(serieDetailsModel: serieDetailsModel));
+          } else {
+            MovieDetailsModel movieDetailsModel =
+                await movieDetailsRepository.getMovieDetail(event.id);
 
-        if (event.isSerie == true) {
-          SerieDetailsModel serieDetailsModel =
-              await serieDetailsRepository.getSerieDetail(event.id);
-
-          emit(DetailSucessState(serieDetailsModel: serieDetailsModel));
-        } else {
-          MovieDetailsModel movieDetailsModel =
-              await movieDetailsRepository.getMovieDetail(event.id);
-
-          emit(DetailSucessState(movieDetailsModel: movieDetailsModel));
+            emit(DetailSucessState(movieDetailsModel: movieDetailsModel));
+          }
+        } catch (e) {
+          emit(DetailErrorState());
         }
+      },
+    );
+
+    on<GetFavoritedMovies>((event, emit) async {
+      try {
+        emit(MoviesFavoritedLoading());
+
+        emit(MoviesFavoritedSuccess(
+            movies: await serviceHive.getMoviesFavorited()));
       } catch (e) {
-        emit(DetailErrorState());
+        emit(MoviesFavoritedError());
       }
-    }); //TODO: evento para trazer detalhes da midia
-
-    //TODO: Criar evento para favoritar
-
-    //TODO: Criar evento para trazer os filmes favoritados
+    });
   }
 
   void _onFetchMovies(FetchMovies event, Emitter<MediaState> emit) async {
@@ -161,6 +189,14 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
       emit(SearchSuccessState(discoverMovieModel: List.from(movieList)));
     } catch (error) {
       emit(SearchErrorState(error.toString()));
+    }
+  }
+
+  Future favoriteMovie({required MovieModel movieModel}) async {
+    if (await serviceHive.isMovieFavorited(movieModel.id!)) {
+      await serviceHive.removeFavoriteMovie(movieModel.id!);
+    } else {
+      await serviceHive.favoriteMovie(movieModel);
     }
   }
 }

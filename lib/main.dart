@@ -1,9 +1,14 @@
 import 'package:dart_movies_app/bloc/media/media_bloc.dart';
+import 'package:dart_movies_app/others/service_hive.dart';
 import 'package:dart_movies_app/view/intro_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  ServiceHive serviceHive = ServiceHive();
+  await serviceHive.init();
+
   runApp(const MainApp());
 }
 

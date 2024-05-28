@@ -2,12 +2,17 @@ part of 'media_bloc.dart';
 
 abstract class MediaEvent {}
 
-final class GetMediasEvent extends MediaEvent {
+final class GetMoviesEvent extends MediaEvent {
   final int page;
 
-  GetMediasEvent({required this.page});
+  GetMoviesEvent({required this.page});
 }
 
+final class GetSeriesEvent extends MediaEvent {
+  final int page;
+
+  GetSeriesEvent({required this.page});
+}
 
 final class GetDetaisMediaEvent extends MediaEvent {
   final int id;
@@ -33,6 +38,7 @@ class SearchMovieEvent extends MediaEvent {
 
   SearchMovieEvent(this.value);
 }
-// final class GetDetaisMediaEvent extends MediaEvent {}
 
 final class FetchInfosHomePage extends MediaEvent {}
+
+final class GetFavoritedMovies extends MediaEvent {}

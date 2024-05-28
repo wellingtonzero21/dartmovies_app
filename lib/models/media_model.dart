@@ -1,4 +1,4 @@
-class MediaModel {
+class MovieModel {
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
@@ -14,7 +14,7 @@ class MediaModel {
   double? voteAverage;
   int? voteCount;
 
-  MediaModel(
+  MovieModel(
       {this.adult,
       this.backdropPath,
       this.genreIds,
@@ -30,7 +30,7 @@ class MediaModel {
       this.voteAverage,
       this.voteCount});
 
-  MediaModel.fromJson(Map<String, dynamic> json) {
+  MovieModel.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = json['genre_ids'].cast<int>();

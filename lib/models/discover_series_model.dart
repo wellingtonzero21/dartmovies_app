@@ -1,20 +1,20 @@
-import 'package:dart_movies_app/models/media_model.dart';
+import 'package:dart_movies_app/models/series_model.dart';
 
-class DiscoverMovieModel {
+class DiscoverSeriesModel {
   int? page;
-  List<MovieModel>? results;
+  List<SeriesModel>? results;
   int? totalPages;
   int? totalResults;
 
-  DiscoverMovieModel(
+  DiscoverSeriesModel(
       {this.page, this.results, this.totalPages, this.totalResults});
 
-  DiscoverMovieModel.fromJson(Map<String, dynamic> json) {
+  DiscoverSeriesModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
-      results = <MovieModel>[];
+      results = <SeriesModel>[];
       json['results'].forEach((v) {
-        results!.add(MovieModel.fromJson(v));
+        results!.add(SeriesModel.fromJson(v));
       });
     }
     totalPages = json['total_pages'];

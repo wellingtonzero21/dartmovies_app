@@ -2,7 +2,7 @@ import 'package:dart_movies_app/models/media_model.dart';
 
 class WatchContinueModel {
   int? page;
-  List<MediaModel>? results;
+  List<MovieModel>? results;
   int? totalPages;
   int? totalResults;
 
@@ -12,9 +12,9 @@ class WatchContinueModel {
   WatchContinueModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
-      results = <MediaModel>[];
+      results = <MovieModel>[];
       json['results'].forEach((v) {
-        results!.add(MediaModel.fromJson(v));
+        results!.add(MovieModel.fromJson(v));
       });
     }
     totalPages = json['total_pages'];

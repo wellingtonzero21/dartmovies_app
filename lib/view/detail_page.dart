@@ -1,3 +1,4 @@
+import 'package:dart_movies_app/others/service_hive.dart';
 import 'package:dart_movies_app/repositories/movie_details_repository.dart';
 import 'package:dart_movies_app/models/serie_details_model.dart';
 import 'package:dart_movies_app/models/movie_details_model.dart';
@@ -12,18 +13,20 @@ class DetailPage extends StatefulWidget {
   final MovieDetailsRepository movieDetailsProvider = MovieDetailsRepository();
   final MediaBloc mediaBloc = MediaBloc();
   final bool isSerie;
-  final int id;
 
-  DetailPage(
-      {super.key, required this.id, this.isSerie = false, required allMovies});
+  final MovieModel movieModel;
+
+  DetailPage({super.key, this.isSerie = false, required this.movieModel});
 
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
-  late List<MediaModel> allMovies = [];
+  late List<MovieModel> allMovies = [];
   late MediaBloc mediaBloc;
+
+  ServiceHive serviceHive = ServiceHive();
 
   MovieDetailsModel? movieDetailsModel;
   SerieDetailsModel? serieDetailsModel;
@@ -31,7 +34,8 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     mediaBloc = BlocProvider.of<MediaBloc>(context);
-    mediaBloc.add(GetDetaisMediaEvent(id: widget.id, isSerie: widget.isSerie));
+    mediaBloc.add(GetDetaisMediaEvent(
+        id: widget.movieModel.id!, isSerie: widget.isSerie));
     super.initState();
   }
 
@@ -73,10 +77,11 @@ class _DetailPageState extends State<DetailPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MoviePage(
-                                          imageUrl:
-                                              'https://image.tmdb.org/t/p/w300/${state.movieDetailsModel?.backdropPath}',
-                                        )),
+                                  builder: (context) => MoviePage(
+                                    imageUrl:
+                                        'https://image.tmdb.org/t/p/w300/${state.movieDetailsModel?.backdropPath}',
+                                  ),
+                                ),
                               )
                             },
                           ),
@@ -148,13 +153,36 @@ class _DetailPageState extends State<DetailPage> {
                                           ),
                                           const Spacer(),
                                           IconButton(
-                                            icon: const Icon(
-                                                Icons.favorite_border,
-                                                size: 30),
+                                            icon: FutureBuilder<bool>(
+                                              future:
+                                                  serviceHive.isMovieFavorited(
+                                                      widget.movieModel.id!),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const CircularProgressIndicator(); // ou qualquer indicador de carregamento desejado
+                                                } else {
+                                                  final isFavorited =
+                                                      snapshot.data ?? false;
+                                                  return Icon(
+                                                    isFavorited
+                                                        ? Icons.favorite
+                                                        : Icons.favorite_border,
+                                                    size: 30,
+                                                  );
+                                                }
+                                              },
+                                            ),
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .secondary,
-                                            onPressed: () {},
+                                            onPressed: () async {
+                                              await mediaBloc.favoriteMovie(
+                                                  movieModel:
+                                                      widget.movieModel);
+
+                                              setState(() {});
+                                            },
                                           ),
                                         ],
                                       ),
@@ -413,15 +441,15 @@ class _DetailPageState extends State<DetailPage> {
                                                 color: Color(0xFFB5B5B5)),
                                           ),
                                           const Spacer(),
-                                          IconButton(
-                                            icon: const Icon(
-                                                Icons.favorite_border,
-                                                size: 30),
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            onPressed: () {},
-                                          ),
+                                          // IconButton(
+                                          //   icon: const Icon(
+                                          //       Icons.favorite_border,
+                                          //       size: 30),
+                                          //   color: Theme.of(context)
+                                          //       .colorScheme
+                                          //       .secondary,
+                                          //   onPressed: () {},
+                                          // ),
                                         ],
                                       ),
                                     ),
