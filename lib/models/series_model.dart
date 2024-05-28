@@ -1,37 +1,4 @@
-class SeriesProviderModel {
-  int? page;
-  List<Series>? results;
-  int? totalPages;
-  int? totalResults;
-
-  SeriesProviderModel(
-      {this.page, this.results, this.totalPages, this.totalResults});
-
-  SeriesProviderModel.fromJson(Map<String, dynamic> json) {
-    page = json['page'];
-    if (json['results'] != null) {
-      results = <Series>[];
-      json['results'].forEach((v) {
-        results!.add(Series.fromJson(v));
-      });
-    }
-    totalPages = json['total_pages'];
-    totalResults = json['total_results'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    if (results != null) {
-      data['results'] = results!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = totalPages;
-    data['total_results'] = totalResults;
-    return data;
-  }
-}
-
-class Series {
+class SeriesModel {
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
@@ -47,7 +14,7 @@ class Series {
   double? voteAverage;
   int? voteCount;
 
-  Series(
+  SeriesModel(
       {this.adult,
       this.backdropPath,
       this.genreIds,
@@ -63,7 +30,7 @@ class Series {
       this.voteAverage,
       this.voteCount});
 
-  Series.fromJson(Map<String, dynamic> json) {
+  SeriesModel.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = json['genre_ids'].cast<int>();

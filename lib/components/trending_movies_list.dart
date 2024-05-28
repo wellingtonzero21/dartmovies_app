@@ -1,12 +1,16 @@
+import 'package:dart_movies_app/models/media_model.dart';
+import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'small_card.dart';
-import '../api/models/trending_movies_model.dart';
 
 class TrendingMoviesList extends StatefulWidget {
-  final List<Trending> trendingMovies;
+  final List<MovieModel> trendingMovies;
+  final List<MovieModel> recommendeds;
+
   const TrendingMoviesList({
     super.key,
     required this.trendingMovies,
+    required this.recommendeds,
   });
 
   @override
@@ -22,18 +26,19 @@ class _TrendingMoviesListState extends State<TrendingMoviesList> {
         scrollDirection: Axis.horizontal,
         itemCount: widget.trendingMovies.length,
         itemBuilder: (context, index) {
-          Trending trendingMovie = widget.trendingMovies[index];
+          MovieModel trendingMovie = widget.trendingMovies[index];
 
           return GestureDetector(
             onTap: () {
-              /* Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailPage(
-                    trending: trendingMovie,
+                    movieModel: trendingMovie,
+                    recommendeds: widget.recommendeds,
                   ),
                 ),
-              ); */
+              );
             },
             child: Padding(
               padding: EdgeInsets.only(

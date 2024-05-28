@@ -1,10 +1,11 @@
-import 'package:dart_movies_app/api/models/discover_movie_model.dart';
 import 'package:dart_movies_app/components/small_card.dart';
+import 'package:dart_movies_app/models/media_model.dart';
+import 'package:dart_movies_app/view/detail_page.dart';
 import 'package:flutter/material.dart';
 
 class RecommendedList extends StatelessWidget {
-  final List<Movie> movie;
-  const RecommendedList({super.key, required this.movie});
+  final List<MovieModel> recommendedsMovies;
+  const RecommendedList({super.key, required this.recommendedsMovies});
 
   @override
   Widget build(BuildContext context) {
@@ -13,26 +14,28 @@ class RecommendedList extends StatelessWidget {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: movie.length,
+        itemCount: recommendedsMovies.length,
         itemBuilder: (context, index) {
-          Movie allMoviesModel = movie[index];
+          MovieModel recommendedMovie = recommendedsMovies[index];
 
           return GestureDetector(
             onTap: () {
-              /* Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => DetailPage(
-                          media: allMoviesModel.,
+                          movieModel: recommendedMovie,
+                          recommendeds: recommendedsMovies,
                         )),
-              ); */
+              );
             },
             child: Padding(
               padding: EdgeInsets.only(
-                  left: allMoviesModel == movie.first ? 15 : 0, right: 15),
+                  left: recommendedMovie == recommendedsMovies.first ? 15 : 0,
+                  right: 15),
               child: SmallCard(
                 imageUrl:
-                    'https://media.themoviedb.org/t/p/w220_and_h330_face${allMoviesModel.posterPath}',
+                    'https://media.themoviedb.org/t/p/w220_and_h330_face${recommendedMovie.posterPath}',
                 width: 140,
               ),
             ),

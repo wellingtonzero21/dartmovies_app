@@ -1,10 +1,10 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
-import 'package:dart_movies_app/api/models/discover_movie_model.dart';
+import 'package:dart_movies_app/models/discover_movie_model.dart';
 
-class DiscoverMovieProvider {
-  final HttpAdapter httpAdater;
+class DiscoverMovieRepository {
+  DiscoverMovieRepository();
 
-  DiscoverMovieProvider({required this.httpAdater});
+  final HttpAdapter httpAdater = HttpAdapter();
 
   Future<DiscoverMovieModel> getDiscoverMovie(int pagina) async {
     final url =
@@ -15,4 +15,3 @@ class DiscoverMovieProvider {
     return DiscoverMovieModel.fromJson(response);
   }
 }
-

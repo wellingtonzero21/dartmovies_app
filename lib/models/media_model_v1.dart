@@ -1,6 +1,6 @@
-import 'package:dart_movies_app/model/enums.dart';
+import 'package:dart_movies_app/models/enums.dart';
 
-class MediaModel {
+class MediaModelV1 {
   String title;
   String description;
   String urlSmallBanner;
@@ -18,7 +18,7 @@ class MediaModel {
   String roteiro;
   String produtoras;
 
-  MediaModel({
+  MediaModelV1({
     required this.title,
     required this.description,
     required this.urlSmallBanner,
@@ -38,41 +38,41 @@ class MediaModel {
   });
 }
 
-List<MediaModel> listRecommendeds =
+List<MediaModelV1> listRecommendeds =
     listMedia.where((media) => media.isRecommended == true).toList();
 
-List<MediaModel> listTrendings =
+List<MediaModelV1> listTrendings =
     listMedia.where((media) => media.isTrending == true).toList();
 
-List<MediaModel> listWatched =
+List<MediaModelV1> listWatched =
     listMedia.where((media) => media.isWatched == true).toList();
 
-MediaModel bannerMedia =
+MediaModelV1 bannerMedia =
     listMedia.firstWhere((media) => media.isBanner == true);
 
-List<MediaModel> listMovies =
+List<MediaModelV1> listMovies =
     listMedia.where((media) => media.mediaType == MediaType.movie).toList();
 
-List<MediaModel> listSeries =
+List<MediaModelV1> listSeries =
     listMedia.where((media) => media.mediaType == MediaType.series).toList();
 
-List<MediaModel> listAcao =
+List<MediaModelV1> listAcao =
     listMedia.where((media) => media.genre == Genre.action).toList();
 
-List<MediaModel> listComedia =
+List<MediaModelV1> listComedia =
     listMedia.where((media) => media.genre == Genre.comedy).toList();
 
-List<MediaModel> listDrama =
+List<MediaModelV1> listDrama =
     listMedia.where((media) => media.genre == Genre.drama).toList();
 
-List<MediaModel> listDocu =
+List<MediaModelV1> listDocu =
     listMedia.where((media) => media.genre == Genre.documentario).toList();
 
-List<MediaModel> listAventura =
+List<MediaModelV1> listAventura =
     listMedia.where((media) => media.genre == Genre.aventura).toList();
 
-List<MediaModel> listMedia = [
-  MediaModel(
+List<MediaModelV1> listMedia = [
+  MediaModelV1(
       title: 'invasão Secreta',
       description:
           'Na nova série da Marvel Studios, "Invasão Secreta", passada no presente do UCM, Nick Fury fica a saber de uma invasão clandestina da Terra por uma facção de Skrulls transmorfos. Fury junta-se aos seus aliados, incluindo Everett Ross, Maria Hill e o Skrull Talos, que prosperou na Terra. Juntos terão de correr contra o tempo para impedir uma iminente invasão dos Skrulls e salvar a humanidade.',
@@ -91,7 +91,7 @@ List<MediaModel> listMedia = [
       diretor: 'R. Russo',
       produtoras: 'Disney, MarvelStudios',
       roteiro: 'B. Russo'),
-  MediaModel(
+  MediaModelV1(
       title: 'Tetris',
       description:
           'Baseado na história real do vendedor americano de vídeo games, Henk Rogers (Taron Egerton) e sua descoberta do Tetris, em 1988. Quando ele se propõe a levar o jogo para o mundo e se depara com uma perigosa teia de mentiras e corrupção por trás da Cortina de Ferro.',
@@ -109,7 +109,7 @@ List<MediaModel> listMedia = [
       diretor: 'T. Tris',
       produtoras: 'Netflix',
       roteiro: 'F. Johnson'),
-  MediaModel(
+  MediaModelV1(
       title: 'Green Book',
       description:
           'Baseada em fatos reais, Tony Lip, um segurança ítalo-americano, é contratado como motorista do Dr. Don Shirley, um pianista negro de classe alta, durante uma turnê pelo sul dos Estados Unidos, eles devem seguir o "O Guia" para leva-los aos poucos estabelecimentos que eram seguros para os afro-americanos. Confrontados com o racismo, o perigo – assim como pela humanidade e o humor inesperados - eles são forçados a deixar de lado as diferenças para sobreviver e prosperar nessa jornada.',
@@ -127,7 +127,7 @@ List<MediaModel> listMedia = [
       diretor: 'J. Ramos',
       produtoras: '21th Fox',
       roteiro: 'C. Clark'),
-  MediaModel(
+  MediaModelV1(
     title: 'Fome de Poder',
     description:
         'A história da ascenção do McDonalds. Após receber uma demanda sem precedentes e notar uma movimentação de consumidores fora do normal, o vendedor de Illinois Ray Kroc (Michael Keaton) adquire uma participação nos negócios da lanchonete dos irmãos Richard e Maurice "Mac" McDonald no sul da Califórnia e, pouco a pouco eliminando os dois da rede, transforma a marca em um gigantesco império alimentício.',
@@ -146,7 +146,7 @@ List<MediaModel> listMedia = [
     produtoras: 'HBO',
     roteiro: 'P. Body',
   ),
-  MediaModel(
+  MediaModelV1(
       title: 'O Rei Leão',
       description:
           'O Rei Leão (The Lion King), da Disney, realizado por Jon Favreau, viaja até à savana africana, onde um futuro rei ultrapassa a traição e a tragédia, para assumir o lugar a que tem direito na Pedra do Reino. Através de técnicas cinematográficas pioneiras, O Rei Leão consegue que personagens muito queridas ganhem vida de uma forma totalmente nova.',
@@ -164,7 +164,7 @@ List<MediaModel> listMedia = [
       diretor: 'T. Palma',
       produtoras: 'Disney',
       roteiro: 'B. Spielberg'),
-  MediaModel(
+  MediaModelV1(
       title: 'Capitão Marvel',
       description:
           'Capitão Marvel, da Marvel Studios, é uma aventura num período inédito na história do Universo Cinemático da Marvel que segue o percurso de Carol Danvers à medida que se torna numa das heroínas mais poderosas do Universo.',
@@ -182,7 +182,7 @@ List<MediaModel> listMedia = [
       diretor: 'R. Santana',
       produtoras: 'Disney, MarvelStudios',
       roteiro: 'B. Klopp'),
-  MediaModel(
+  MediaModelV1(
       title: 'Godzilla x Kong: The New Empire',
       description:
           'Em Godzilla x Kong: The New Empire, o poderoso Kong e o temível Godzilla se unem contra uma colossal ameaça mortal escondida no mundo dos humanos.',
@@ -200,7 +200,7 @@ List<MediaModel> listMedia = [
       diretor: 'T. Kondo',
       produtoras: 'Universal',
       roteiro: 'S. Takada'),
-  MediaModel(
+  MediaModelV1(
       title: 'Napoleão',
       description:
           'Um olhar pessoal sobre as origens do líder militar francês e sua rápida e implacável ascensão a imperador. A história é vista através do prisma do relacionamento dependente e volátil de Napoleão com sua esposa e amor verdadeiro, Josefina.',
@@ -219,7 +219,7 @@ List<MediaModel> listMedia = [
       diretor: 'R. Scott',
       produtoras: 'Columbia',
       roteiro: 'D. Scarpa'),
-  MediaModel(
+  MediaModelV1(
       title: 'The Banker',
       description:
           'Nos anos 60, dois afro-americanos (Anthony Mackie e Samuel L. Jackson) traçam um plano de negócios engenhoso para lutar pela igualdade de acesso ao sonho americano. Nicholas Hoult e Nia Long co-estrelam o drama inspirado em fatos reais.',
@@ -237,7 +237,7 @@ List<MediaModel> listMedia = [
       diretor: 'R. Portman',
       produtoras: 'A24',
       roteiro: 'B. Trent'),
-  MediaModel(
+  MediaModelV1(
       title: 'Carros',
       description:
           'Uma estreia do Disney+ Day A nova série "Carros em Viagem", da Pixar Animation Studios, segue Faísca McQueen e o seu melhor amigo Mate enquanto seguem para este de Radiador Springs, numa viagem ao longo do país, para se encontrarem com a irmã de Mate',
@@ -255,7 +255,7 @@ List<MediaModel> listMedia = [
       diretor: 'S. Langley',
       produtoras: 'Disney, Pixar',
       roteiro: 'P. J. Conway'),
-  MediaModel(
+  MediaModelV1(
       title: 'Lightyear',
       description:
           'A origem do patrulheiro espacial de Toy Story, Buzz Lightyear. Buzz faz um teste de voo e acaba ficando abandonado em um planeta a milhões de anos-luz da terra. Agora ele precisa achar um jeito para voltar para casa enquanto luta contra a ameaça de Zurg.',
@@ -273,7 +273,7 @@ List<MediaModel> listMedia = [
       diretor: 'V. Rust',
       produtoras: 'Disney, Pixar',
       roteiro: 'W. Sanchez'),
-  MediaModel(
+  MediaModelV1(
       title: 'Jungle Cruise – A Maldição nos Confins da Selva',
       description:
           '"Jungle Cruise – A Maldição nos Confins da Selva" da Disney é uma viagem pelo Amazonas muito divertida e recheada de emoções, na companhia do perspicaz capitão Frank Wolff e da intrépida investigadora Dra. Lily Houghton. Lily parte de Londres para a selva da Amazónia e contrata os serviços de qualidade duvidosa de Frank para a guiar rio abaixo no La Quila – o barco degradado, mas encantador, de Frank – com o objetivo de encontrar uma árvore antiga com capacidades curativas incomparáveis.',
@@ -291,7 +291,7 @@ List<MediaModel> listMedia = [
       diretor: 'S. Kyle',
       produtoras: 'Disney',
       roteiro: 'B. Smith'),
-  MediaModel(
+  MediaModelV1(
       title: 'Vingadores',
       description:
           'Loki, o irmão de Thor, ganha acesso ao poder ilimitado do cubo cósmico ao roubá-lo de dentro das instalações da S.H.I.E.L.D. Nick Fury, o diretor desta agência internacional que mantém a paz, logo reúne os únicos super-heróis que serão capazes de defender a Terra de ameaças sem precedentes. Homem de Ferro, Capitão América, Hulk, Thor, Viúva Negra e Gavião Arqueiro formam o time dos sonhos de Fury, mas eles precisam aprender a colocar os egos de lado e agir como um grupo em prol da humanidade.',

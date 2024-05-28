@@ -1,10 +1,10 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
-import 'package:dart_movies_app/api/models/movie_details_model.dart';
+import 'package:dart_movies_app/models/movie_details_model.dart';
 
-class MovieDetailsProvider {
-  final HttpAdapter httpAdater;
+class MovieDetailsRepository {
+  MovieDetailsRepository();
 
-  MovieDetailsProvider({required this.httpAdater});
+  final HttpAdapter httpAdater = HttpAdapter();
 
   Future<MovieDetailsModel> getMovieDetail(int id) async {
     final url = 'https://api.themoviedb.org/3/movie/$id?language=pt-BR';
@@ -14,4 +14,3 @@ class MovieDetailsProvider {
     return MovieDetailsModel.fromJson(response);
   }
 }
-

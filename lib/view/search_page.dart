@@ -1,17 +1,16 @@
-import 'package:dart_movies_app/api/models/discover_movie_model.dart';
-import 'package:dart_movies_app/api/providers/discover_movie_provider.dart';
+import 'package:dart_movies_app/bloc/media/media_bloc.dart';
+import 'package:dart_movies_app/models/media_model.dart';
+import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:dart_movies_app/components/appbar_custom.dart';
 import 'package:dart_movies_app/components/research_card.dart';
 import 'package:dart_movies_app/components/small_card.dart';
-import 'package:dart_movies_app/model/enums.dart';
-import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:flutter/material.dart';
-import '../model/media_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchPage extends StatefulWidget {
   final TextEditingController controller = TextEditingController();
-  final DiscoverMovieProvider discoverMovieProvider =
-      DiscoverMovieProvider(httpAdater: HttpAdapter());
+  final DiscoverMovieRepository discoverMovieProvider =
+      DiscoverMovieRepository();
 
   SearchPage({super.key});
 
@@ -19,29 +18,8 @@ class SearchPage extends StatefulWidget {
   SearchPageState createState() => SearchPageState();
 }
 
-MediaModel movieToMediaModel(Movie movie) {
-  return MediaModel(
-    title: movie.title ?? '',
-    description: movie.overview ?? '',
-    urlSmallBanner: movie.posterPath ?? '',
-    urlLongBanner: movie.backdropPath ?? '',
-    isRecommended: true,
-    genre: Genre.action, // Você precisa mapear os genreIds para o objeto Genre
-    mediaType:
-        MediaType.series, // Supondo que todos os filmes são do tipo 'movie'
-    length: '', // Este campo não está disponível na classe Movie
-    lancamento: movie.releaseDate ?? '',
-    classif: '', // Este campo não está disponível na classe Movie
-    diretor: '', // Este campo não está disponível na classe Movie
-    produtoras: '', // Este campo não está disponível na classe Movie
-    roteiro: '', // Este campo não está disponível na classe Movie
-  );
-}
-
 class SearchPageState extends State<SearchPage> {
-  late List<MediaModel> filteredMediaList = [];
-  late List<Movie> movieList = [];
-  late Future<void> _fetchMoviesFuture;
+  late MediaBloc _mediaBloc;
   int paginaCorrente = 1;
   final ScrollController _scrollController = ScrollController();
 
@@ -49,7 +27,8 @@ class SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _fetchMoviesFuture = _fetchMovies();
+    _mediaBloc = BlocProvider.of<MediaBloc>(context);
+    _mediaBloc.add(FetchMovies(paginaCorrente));
   }
 
   @override
@@ -61,21 +40,9 @@ class SearchPageState extends State<SearchPage> {
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      _fetchMovies();
-    }
-  }
-
-  Future<void> _fetchMovies() async {
-    final discoverMovieModel =
-        await widget.discoverMovieProvider.getDiscoverMovie(paginaCorrente);
-    setState(() {
-      movieList = discoverMovieModel.results ?? [];
-      //filteredMediaList = movieList.map(movieToMediaModel).toList();
-      filteredMediaList.addAll(movieList.map(movieToMediaModel).toList());
-
       paginaCorrente++;
-    });
-    return;
+      _mediaBloc.add(LoadMoreMovies(paginaCorrente));
+    }
   }
 
   @override
@@ -91,12 +58,7 @@ class SearchPageState extends State<SearchPage> {
                   controller: widget.controller,
                   onChanged: (String value) {
                     setState(() {
-                      filteredMediaList = movieList
-                          .map(movieToMediaModel)
-                          .where((media) => media.title
-                              .toLowerCase()
-                              .contains(value.toLowerCase()))
-                          .toList();
+                      _mediaBloc.add(SearchMovieEvent(value));
                     });
                   },
                 ),
@@ -104,7 +66,64 @@ class SearchPageState extends State<SearchPage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 25),
-                    child: FutureBuilder(
+                    child: BlocBuilder<MediaBloc, MediaState>(
+                      bloc: _mediaBloc,
+                      builder: (context, state) {
+                        if (state is SearchLoadingState &&
+                            paginaCorrente == 1) {
+                          return const Center(
+                              child: CircularProgressIndicator(
+                                  color: Colors.white));
+                        } else if (state is SearchSuccessState) {
+                          return NotificationListener<ScrollNotification>(
+                            onNotification: (ScrollNotification scrollInfo) {
+                              if (scrollInfo.metrics.pixels ==
+                                  scrollInfo.metrics.maxScrollExtent) {
+                                if (state is! LoadMoreLoadingState) {
+                                  paginaCorrente++;
+                                  _mediaBloc
+                                      .add(LoadMoreMovies(paginaCorrente));
+                                }
+                                return true;
+                              }
+                              return false;
+                            },
+                            child: GridView.builder(
+                              controller: _scrollController,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 35 / 50,
+                              ),
+                              itemCount: state.discoverMovieModel.length,
+                              itemBuilder: (context, index) {
+                                MovieModel trendingMedia =
+                                    state.discoverMovieModel[index];
+
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: SmallCard(
+                                      imageUrl:
+                                          'https://image.tmdb.org/t/p/w200/${trendingMedia.posterPath}',
+                                    ),
+                                  ),
+                                );
+                              },
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                            ),
+                          );
+                        } else if (state is SearchErrorState) {
+                          return Center(child: Text('Erro: ${state.message}'));
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+
+                    /* FutureBuilder(
                       future: _fetchMoviesFuture,
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         if (snapshot.connectionState ==
@@ -129,19 +148,12 @@ class SearchPageState extends State<SearchPage> {
                                   filteredMediaList[index];
                               return GestureDetector(
                                 onTap: () {
-                                  /* Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailPage(id: trendingMedia.id ?? 0),
-                                    ),
-                                  ); */
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(5),
                                   child: SmallCard(
                                     imageUrl:
-                                        'https://image.tmdb.org/t/p/w200/${trendingMedia.urlSmallBanner}',
+                                        'https://image.tmdb.org/t/p/w200/${trendingMedia.posterPath}',
                                   ),
                                 ),
                               );
@@ -151,7 +163,7 @@ class SearchPageState extends State<SearchPage> {
                           );
                         }
                       },
-                    ),
+                    ), */
                   ),
                 ),
               ],

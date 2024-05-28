@@ -1,37 +1,4 @@
-class WatchContinueModel {
-  int? page;
-  List<Movie2>? results;
-  int? totalPages;
-  int? totalResults;
-
-  WatchContinueModel(
-      {this.page, this.results, this.totalPages, this.totalResults});
-
-  WatchContinueModel.fromJson(Map<String, dynamic> json) {
-    page = json['page'];
-    if (json['results'] != null) {
-      results = <Movie2>[];
-      json['results'].forEach((v) {
-        results!.add(Movie2.fromJson(v));
-      });
-    }
-    totalPages = json['total_pages'];
-    totalResults = json['total_results'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    if (results != null) {
-      data['results'] = results!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = totalPages;
-    data['total_results'] = totalResults;
-    return data;
-  }
-}
-
-class Movie2 {
+class MovieModel {
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
@@ -47,7 +14,7 @@ class Movie2 {
   double? voteAverage;
   int? voteCount;
 
-  Movie2(
+  MovieModel(
       {this.adult,
       this.backdropPath,
       this.genreIds,
@@ -63,7 +30,7 @@ class Movie2 {
       this.voteAverage,
       this.voteCount});
 
-  Movie2.fromJson(Map<String, dynamic> json) {
+  MovieModel.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = json['genre_ids'].cast<int>();

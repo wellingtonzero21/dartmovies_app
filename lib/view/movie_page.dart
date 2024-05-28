@@ -27,7 +27,7 @@ class _MoviePageState extends State<MoviePage> {
         children: [
           Image.network(
             widget.imageUrl,
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
           ),
