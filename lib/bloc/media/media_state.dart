@@ -83,3 +83,17 @@ final class MoviesFavoritedSuccess extends MediaState {
 }
 
 final class MoviesFavoritedError extends MediaState {}
+
+final class GenLoadingState extends MediaState {}
+
+class GenreMovieSuccessState extends MediaState {
+  final List<GenreMovieModelList> genreMovieModel;
+
+  GenreMovieSuccessState({required this.genreMovieModel});
+}
+
+class GenreMovieErrorState extends MediaState {
+  final String message;
+
+  GenreMovieErrorState(this.message);
+}

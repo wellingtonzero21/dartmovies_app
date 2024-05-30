@@ -1,4 +1,5 @@
 import 'package:dart_movies_app/bloc/media/media_bloc.dart';
+import 'package:dart_movies_app/models/genre_movie_model.dart';
 import 'package:dart_movies_app/models/media_model.dart';
 import 'package:dart_movies_app/models/movie_details_model.dart';
 import 'package:dart_movies_app/models/series_model.dart';
@@ -34,12 +35,14 @@ class _HomePageState extends State<HomePage>
   List<MovieModel> allMovies = [];
   List<SeriesModel> allSeries = [];
   List<MovieModel> favoritedMovies = [];
+  List<GenreMovieModelList> genreMovies = [];
 
   final ScrollController _scrollControllerMovies = ScrollController();
   final ScrollController _scrollControllerSeries = ScrollController();
 
   int pageMovie = 1;
   int pageSerie = 1;
+  int genreMovieChoice = 0;
 
   String urlBannerHome = '';
 
@@ -59,7 +62,9 @@ class _HomePageState extends State<HomePage>
   void _handleTabSelection() {
     if (_tabController.index == 1) {
       pageMovie = 1;
+      genreMovieChoice = 0;
       mediaBloc.add(GetMoviesEvent(page: pageMovie));
+      mediaBloc.add(GetGenreMoviesEvent());
     }
 
     if (_tabController.index == 2) {
@@ -333,6 +338,9 @@ class _HomePageState extends State<HomePage>
             allMovies = state.discoverMovieModel.results ?? [];
           }
         }
+        if (state is GenreMovieSuccessState) {
+          genreMovies = state.genreMovieModel;
+        }
       },
       builder: (context, state) {
         if (state is MoviesLoadingState) {
@@ -355,36 +363,94 @@ class _HomePageState extends State<HomePage>
           );
         }
 
-        return GridView.builder(
-          controller: _scrollControllerMovies,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 35 / 50,
-          ),
-          itemCount: allMovies.length,
-          itemBuilder: (context, index) {
-            MovieModel movie = allMovies[index];
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailPage(
-                      movieModel: movie,
-                      recommendeds: recommendedMovies,
+        return Column(
+          children: [
+            Container(
+              height: 50,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: genreMovies.length,
+                itemBuilder: (context, index) {
+                  GenreMovieModelList geMovie = genreMovies[index];
+                  return Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                const EdgeInsets.only(left: 7, right: 7)),
+                            backgroundColor: genreMovieChoice == geMovie.id
+                                ? MaterialStateProperty.all<Color>(
+                                    const Color(0xFF000000))
+                                : MaterialStateProperty.all<Color>(
+                                    const Color(0xFF00FF65)),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(13.0),
+                                    side: BorderSide(
+                                        color: Colors.green[700]!)))),
+                        onPressed: () {
+                          genreMovieChoice = geMovie.id ?? 0;
+                          mediaBloc.add(
+                              GetMoviesEvent(page: 1, genre: geMovie.id ?? 0));
+                        },
+                        child: genreMovieChoice == geMovie.id
+                            ? Text(
+                                geMovie.name ?? '',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17.0),
+                              )
+                            : Text(
+                                geMovie.name ?? '',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17.0),
+                              ),
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(6),
-                child: SmallCard(
-                  imageUrl:
-                      'https://media.themoviedb.org/t/p/w220_and_h330_face${movie.posterPath}',
-                ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+            Expanded(
+              child: GridView.builder(
+                controller: _scrollControllerMovies,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 35 / 50,
+                ),
+                itemCount: allMovies.length,
+                itemBuilder: (context, index) {
+                  MovieModel movie = allMovies[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailPage(
+                            movieModel: movie,
+                            recommendeds: recommendedMovies,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: SmallCard(
+                        imageUrl:
+                            'https://media.themoviedb.org/t/p/w220_and_h330_face${movie.posterPath}',
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         );
       },
     );

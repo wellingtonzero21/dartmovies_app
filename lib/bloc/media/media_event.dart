@@ -4,8 +4,9 @@ abstract class MediaEvent {}
 
 final class GetMoviesEvent extends MediaEvent {
   final int page;
+  final int genre;
 
-  GetMoviesEvent({required this.page});
+  GetMoviesEvent({required this.page, this.genre = 0});
 }
 
 final class GetSeriesEvent extends MediaEvent {
@@ -42,3 +43,5 @@ class SearchMovieEvent extends MediaEvent {
 final class FetchInfosHomePage extends MediaEvent {}
 
 final class GetFavoritedMovies extends MediaEvent {}
+
+final class GetGenreMoviesEvent extends MediaEvent {}
