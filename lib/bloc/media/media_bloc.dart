@@ -1,11 +1,13 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:dart_movies_app/models/discover_movie_model.dart';
+import 'package:dart_movies_app/models/genre_movie_model.dart';
 import 'package:dart_movies_app/models/movie_details_model.dart';
 import 'package:dart_movies_app/models/serie_details_model.dart';
 import 'package:dart_movies_app/models/discover_series_model.dart';
 import 'package:dart_movies_app/models/series_model.dart';
 import 'package:dart_movies_app/others/service_hive.dart';
 import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
+import 'package:dart_movies_app/repositories/genre_movie_repository.dart';
 import 'package:dart_movies_app/repositories/movie_details_repository.dart';
 import 'package:dart_movies_app/repositories/series_details.dart';
 import 'package:dart_movies_app/models/media_model.dart';
@@ -33,12 +35,14 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
   TrendingPeopleRepository trendingPeopleRepository =
       TrendingPeopleRepository(httpAdater: HttpAdapter());
   SearchMovieRepository searchRepository = SearchMovieRepository();
+  GenreMovieRepository genremovieRepository = GenreMovieRepository();
   SeriesRepository seriesRepository =
       SeriesRepository(httpAdater: HttpAdapter());
 
   ServiceHive serviceHive = ServiceHive();
 
   late List<MovieModel> movieList = [];
+  late List<GenreMovieModelList> genremovieList = [];
 
   MediaBloc() : super(MediaInitial()) {
     on<GetMoviesEvent>((event, emit) async {
@@ -47,13 +51,13 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
           emit(MoviesLoadingState());
 
           DiscoverMovieModel discoverMovieModel =
-              await movieRepository.getDiscoverMovie(event.page);
+              await movieRepository.getDiscoverMovie(event.page, event.genre);
 
           emit(MoviesSuccessState(
               discoverMovieModel: discoverMovieModel, isAdd: false));
         } else if (event.page > 1) {
           DiscoverMovieModel discoverMovieModel =
-              await movieRepository.getDiscoverMovie(event.page);
+              await movieRepository.getDiscoverMovie(event.page, event.genre);
 
           emit(MoviesSuccessState(
               discoverMovieModel: discoverMovieModel, isAdd: true));
@@ -96,7 +100,7 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
               'https://image.tmdb.org/t/p/w300${trendingMoviesModel.results?.first.backdropPath}';
 
           DiscoverMovieModel watchContinueModel =
-              await watchContinueRepository.getDiscoverMovie(1);
+              await watchContinueRepository.getDiscoverMovie(1, 0);
 
           DiscoverMovieModel recommendedsMoviesModel =
               await recommendedMovieRepository.getRecommendedMovie();
@@ -120,6 +124,7 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
     on<FetchMovies>(_onFetchMovies);
     on<LoadMoreMovies>(_onLoadMoreMovies);
     on<SearchMovieEvent>(_onSearchMovies);
+    on<GetGenreMoviesEvent>(_onGetGenreMoviesEvent);
 
     on<GetDetaisMediaEvent>(
       (event, emit) async {
@@ -159,8 +164,7 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
     emit(SearchLoadingState());
     try {
       final discoverMovieModel =
-          await movieRepository.getDiscoverMovie(event.page);
-
+          await movieRepository.getDiscoverMovie(event.page, 0);
       movieList.addAll(discoverMovieModel.results ?? []);
       emit(SearchSuccessState(discoverMovieModel: List.from(movieList)));
     } catch (error) {
@@ -172,7 +176,7 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
     emit(LoadMoreLoadingState());
     try {
       final discoverMovieModel =
-          await movieRepository.getDiscoverMovie(event.page);
+          await movieRepository.getDiscoverMovie(event.page, 0);
       movieList.addAll(discoverMovieModel.results ?? []);
       emit(SearchSuccessState(discoverMovieModel: List.from(movieList)));
     } catch (error) {
@@ -197,6 +201,19 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
       await serviceHive.removeFavoriteMovie(movieModel.id!);
     } else {
       await serviceHive.favoriteMovie(movieModel);
+    }
+  }
+
+  void _onGetGenreMoviesEvent(
+      GetGenreMoviesEvent event, Emitter<MediaState> emit) async {
+    emit(GenLoadingState());
+    try {
+      final genreMovieModel = await genremovieRepository.getGenreMovie();
+
+      genremovieList.addAll(genreMovieModel.genres ?? []);
+      emit(GenreMovieSuccessState(genreMovieModel: List.from(genremovieList)));
+    } catch (error) {
+      emit(GenreMovieErrorState(error.toString()));
     }
   }
 }
