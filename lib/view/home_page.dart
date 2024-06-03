@@ -1,5 +1,6 @@
 import 'package:dart_movies_app/bloc/media/media_bloc.dart';
 import 'package:dart_movies_app/models/genre_movie_model.dart';
+import 'package:dart_movies_app/models/genre_series_model.dart';
 import 'package:dart_movies_app/models/media_model.dart';
 import 'package:dart_movies_app/models/movie_details_model.dart';
 import 'package:dart_movies_app/models/series_model.dart';
@@ -36,6 +37,7 @@ class _HomePageState extends State<HomePage>
   List<SeriesModel> allSeries = [];
   List<MovieModel> favoritedMovies = [];
   List<GenreMovieModelList> genreMovies = [];
+  List<GenreSeriesModelList> genreSeries = [];
 
   final ScrollController _scrollControllerMovies = ScrollController();
   final ScrollController _scrollControllerSeries = ScrollController();
@@ -70,6 +72,7 @@ class _HomePageState extends State<HomePage>
     if (_tabController.index == 2) {
       pageSerie = 1;
       mediaBloc.add(GetSeriesEvent(page: pageSerie));
+      mediaBloc.add(GetGenreSeriesEvent());
     }
 
     if (_tabController.index == 3) {
@@ -466,6 +469,9 @@ class _HomePageState extends State<HomePage>
             allSeries = state.series;
           }
         }
+        if (state is GenreSeriesSuccessState) {
+          genreSeries = state.genreSeriesModel;
+        }
       },
       builder: (context, state) {
         if (state is SeriesLoadingState) {
@@ -488,36 +494,94 @@ class _HomePageState extends State<HomePage>
           );
         }
 
-        return GridView.builder(
-          controller: _scrollControllerSeries,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 35 / 50,
-          ),
-          itemCount: allSeries.length,
-          itemBuilder: (context, index) {
-            SeriesModel serie = allSeries[index];
-            return GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => DetailPage(
-                //       id: serie.id ?? 0,
-                //       isSerie: true,
-                //     ),
-                //   ),
-                // );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(6),
-                child: SmallCard(
-                  imageUrl:
-                      "https://media.themoviedb.org/t/p/w220_and_h330_face${serie.posterPath}",
-                ),
+        return Column(
+          children: [
+            Container(
+              height: 50,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: genreSeries.length,
+                itemBuilder: (context, index) {
+                  GenreSeriesModelList geSeries = genreSeries[index];
+                  return Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                const EdgeInsets.only(left: 7, right: 7)),
+                            backgroundColor: genreMovieChoice == geSeries.id
+                                ? MaterialStateProperty.all<Color>(
+                                    const Color(0xFF000000))
+                                : MaterialStateProperty.all<Color>(
+                                    const Color(0xFF00FF65)),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(13.0),
+                                    side: BorderSide(
+                                        color: Colors.green[700]!)))),
+                        onPressed: () {
+                          genreMovieChoice = geSeries.id ?? 0;
+                          mediaBloc.add(
+                              GetSeriesEvent(page: 1, genre: geSeries.id ?? 0));
+                        },
+                        child: genreMovieChoice == geSeries.id
+                            ? Text(
+                                geSeries.name ?? '',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17.0),
+                              )
+                            : Text(
+                                geSeries.name ?? '',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17.0),
+                              ),
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+            Expanded(
+              child: GridView.builder(
+                controller: _scrollControllerSeries,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 35 / 50,
+                ),
+                itemCount: allSeries.length,
+                itemBuilder: (context, index) {
+                  SeriesModel serie = allSeries[index];
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => DetailPage(
+                      //       id: serie.id ?? 0,
+                      //       isSerie: true,
+                      //     ),
+                      //   ),
+                      // );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: SmallCard(
+                        imageUrl:
+                            "https://media.themoviedb.org/t/p/w220_and_h330_face${serie.posterPath}",
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         );
       },
     );
