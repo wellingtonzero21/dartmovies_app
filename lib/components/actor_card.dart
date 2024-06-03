@@ -12,12 +12,15 @@ class ActorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String displayImageUrl = imageUrl.contains('facenull')
+        ? 'https://avatars.githubusercontent.com/u/26902816?v=4' // Substitua pelo link do avatar desejado
+        : imageUrl;
     return SizedBox(
       width: 80,
       child: Column(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: NetworkImage(displayImageUrl),
             radius: 40,
           ),
           const SizedBox(height: 10),

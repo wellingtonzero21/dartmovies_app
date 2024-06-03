@@ -11,8 +11,9 @@ final class GetMoviesEvent extends MediaEvent {
 
 final class GetSeriesEvent extends MediaEvent {
   final int page;
+  final int genre;
 
-  GetSeriesEvent({required this.page});
+  GetSeriesEvent({required this.page, this.genre = 0});
 }
 
 final class GetDetaisMediaEvent extends MediaEvent {
@@ -45,3 +46,5 @@ final class FetchInfosHomePage extends MediaEvent {}
 final class GetFavoritedMovies extends MediaEvent {}
 
 final class GetGenreMoviesEvent extends MediaEvent {}
+
+final class GetGenreSeriesEvent extends MediaEvent {}

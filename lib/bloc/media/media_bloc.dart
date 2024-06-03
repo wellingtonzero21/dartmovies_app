@@ -1,6 +1,7 @@
 import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:dart_movies_app/models/discover_movie_model.dart';
 import 'package:dart_movies_app/models/genre_movie_model.dart';
+import 'package:dart_movies_app/models/genre_series_model.dart';
 import 'package:dart_movies_app/models/movie_details_model.dart';
 import 'package:dart_movies_app/models/serie_details_model.dart';
 import 'package:dart_movies_app/models/discover_series_model.dart';
@@ -8,6 +9,7 @@ import 'package:dart_movies_app/models/series_model.dart';
 import 'package:dart_movies_app/others/service_hive.dart';
 import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:dart_movies_app/repositories/genre_movie_repository.dart';
+import 'package:dart_movies_app/repositories/genre_series_repository.dart';
 import 'package:dart_movies_app/repositories/movie_details_repository.dart';
 import 'package:dart_movies_app/repositories/series_details.dart';
 import 'package:dart_movies_app/models/media_model.dart';
@@ -38,11 +40,13 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
   GenreMovieRepository genremovieRepository = GenreMovieRepository();
   SeriesRepository seriesRepository =
       SeriesRepository(httpAdater: HttpAdapter());
+  GenreSeriesRepository genreseriesRepository = GenreSeriesRepository();
 
   ServiceHive serviceHive = ServiceHive();
 
   late List<MovieModel> movieList = [];
   late List<GenreMovieModelList> genremovieList = [];
+  late List<GenreSeriesModelList> genreseriesList = [];
 
   MediaBloc() : super(MediaInitial()) {
     on<GetMoviesEvent>((event, emit) async {
@@ -73,13 +77,13 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
           emit(SeriesLoadingState());
 
           DiscoverSeriesModel seriesModel =
-              await seriesRepository.getSeries(event.page);
+              await seriesRepository.getSeries(event.page, event.genre);
 
           emit(SeriesSuccessState(
               series: seriesModel.results ?? [], isAdd: false));
         } else if (event.page > 1) {
           DiscoverSeriesModel seriesModel =
-              await seriesRepository.getSeries(event.page);
+              await seriesRepository.getSeries(event.page, event.genre);
 
           emit(SeriesSuccessState(
               series: seriesModel.results ?? [], isAdd: true));
@@ -125,6 +129,7 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
     on<LoadMoreMovies>(_onLoadMoreMovies);
     on<SearchMovieEvent>(_onSearchMovies);
     on<GetGenreMoviesEvent>(_onGetGenreMoviesEvent);
+    on<GetGenreSeriesEvent>(_onGetGenreSeriesEvent);
 
     on<GetDetaisMediaEvent>(
       (event, emit) async {
@@ -214,6 +219,20 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
       emit(GenreMovieSuccessState(genreMovieModel: List.from(genremovieList)));
     } catch (error) {
       emit(GenreMovieErrorState(error.toString()));
+    }
+  }
+
+  void _onGetGenreSeriesEvent(
+      GetGenreSeriesEvent event, Emitter<MediaState> emit) async {
+    emit(GenLoadingState());
+    try {
+      final genreSeriesModel = await genreseriesRepository.getGenreSeries();
+
+      genreseriesList.addAll(genreSeriesModel.genres ?? []);
+      emit(GenreSeriesSuccessState(
+          genreSeriesModel: List.from(genreseriesList)));
+    } catch (error) {
+      emit(GenreSeriesErrorState(error.toString()));
     }
   }
 }

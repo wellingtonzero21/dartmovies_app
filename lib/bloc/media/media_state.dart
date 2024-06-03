@@ -97,3 +97,15 @@ class GenreMovieErrorState extends MediaState {
 
   GenreMovieErrorState(this.message);
 }
+
+class GenreSeriesSuccessState extends MediaState {
+  final List<GenreSeriesModelList> genreSeriesModel;
+
+  GenreSeriesSuccessState({required this.genreSeriesModel});
+}
+
+class GenreSeriesErrorState extends MediaState {
+  final String message;
+
+  GenreSeriesErrorState(this.message);
+}
