@@ -192,9 +192,10 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
   void _onSearchMovies(SearchMovieEvent event, Emitter<MediaState> emit) async {
     emit(LoadMoreLoadingState());
     try {
-      final searchMovieModel =
+      DiscoverMovieModel searchMovieModel =
           await searchRepository.getSearchMovie(event.value, 1);
-      movieList.addAll(searchMovieModel.results ?? []);
+      // movieList.addAll( ?? []);
+      movieList = searchMovieModel.results ?? [];
       emit(SearchSuccessState(discoverMovieModel: List.from(movieList)));
     } catch (error) {
       emit(SearchErrorState(error.toString()));
