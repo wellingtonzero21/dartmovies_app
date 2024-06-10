@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dart_movies_app/components/recommended_list.dart';
 import 'package:dart_movies_app/others/service_hive.dart';
 import 'package:dart_movies_app/repositories/movie_details_repository.dart';
@@ -131,13 +133,6 @@ class _DetailPageState extends State<DetailPage> {
                                           fontFamily: 'Poppins-SemiBold',
                                           color: Colors.white),
                                     ),
-                                    // Text(
-                                    //   '${state.movieDetailsModel?.releaseDate}',
-                                    //   style: const TextStyle(
-                                    //       fontSize: 17,
-                                    //       fontFamily: 'Poppins-SemiBold',
-                                    //       color: Color(0xFFB5B5B5)),
-                                    // ),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 15, top: 5, right: 20),
@@ -186,11 +181,136 @@ class _DetailPageState extends State<DetailPage> {
                                                 .colorScheme
                                                 .secondary,
                                             onPressed: () async {
-                                              await mediaBloc.favoriteMovie(
-                                                  movieModel:
-                                                      widget.movieModel);
+                                              final bool isFavorited =
+                                                  await serviceHive
+                                                      .isMovieFavorited(widget
+                                                          .movieModel.id!);
 
-                                              setState(() {});
+                                              if (isFavorited) {
+                                                // Exibir caixa de diálogo de confirmação para remover dos favoritos
+                                                final bool confirmRemove =
+                                                    await showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                    shadowColor: Colors.black,
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                    title: const Text(
+                                                      'Deseja desfavoritar?',
+                                                      style: TextStyle(
+                                                          fontSize: 24,
+                                                          height: 1.2,
+                                                          fontFamily:
+                                                              'Poppins-Bold',
+                                                          color: Colors.black),
+                                                    ),
+                                                    content: const Text(
+                                                      'Tem certeza de que deseja remover este filme/série dos favoritos?',
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          height: 1.2,
+                                                          fontFamily:
+                                                              'Poppins-Regular',
+                                                          color: Colors.black),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () => Navigator
+                                                                .of(context)
+                                                            .pop(
+                                                                false), // Não remover
+                                                        child: const Text(
+                                                          'Cancelar',
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              height: 1.2,
+                                                              fontFamily:
+                                                                  'Poppins-Bold',
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () => Navigator
+                                                                .of(context)
+                                                            .pop(
+                                                                true), // Confirmar remoção
+                                                        child: const Text(
+                                                          'Remover',
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              height: 1.2,
+                                                              fontFamily:
+                                                                  'Poppins-Bold',
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+
+                                                // Se o usuário confirmou a remoção, então remova dos favoritos
+                                                if (confirmRemove) {
+                                                  await mediaBloc.favoriteMovie(
+                                                      movieModel:
+                                                          widget.movieModel);
+                                                  
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      content: Center(
+                                                        child: Text(
+                                                          'Removido dos favoritos!',
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Theme.of(
+                                                                      
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary),
+                                                        ),
+                                                      ),
+                                                      duration: const Duration(
+                                                          seconds: 3),
+                                                    ),
+                                                  );
+                                                  setState(() {});
+                                                }
+                                              } else {
+                                                // Adicionar aos favoritos diretamente
+                                                await mediaBloc.favoriteMovie(
+                                                    movieModel:
+                                                        widget.movieModel);
+                                                
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor:
+                                                        Colors.black,
+                                                    content: Center(
+                                                      child: Text(
+                                                        'Adicionado aos favoritos!',
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Theme.of(
+                                                                    
+                                                                    context)
+                                                                .colorScheme
+                                                                .secondary),
+                                                      ),
+                                                    ),
+                                                    duration: const Duration(
+                                                        seconds: 3),
+                                                  ),
+                                                );
+                                                setState(() {});
+                                              }
                                             },
                                           ),
                                         ],
@@ -390,13 +510,6 @@ class _DetailPageState extends State<DetailPage> {
                                           fontFamily: 'Poppins-SemiBold',
                                           color: Colors.white),
                                     ),
-                                    // Text(
-                                    //   '${state.movieDetailsModel?.releaseDate}',
-                                    //   style: const TextStyle(
-                                    //       fontSize: 17,
-                                    //       fontFamily: 'Poppins-SemiBold',
-                                    //       color: Color(0xFFB5B5B5)),
-                                    // ),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 15, top: 5, right: 20),
@@ -427,15 +540,15 @@ class _DetailPageState extends State<DetailPage> {
                                                 color: Color(0xFFB5B5B5)),
                                           ),
                                           const Spacer(),
-                                          // IconButton(
-                                          //   icon: const Icon(
-                                          //       Icons.favorite_border,
-                                          //       size: 30),
-                                          //   color: Theme.of(context)
-                                          //       .colorScheme
-                                          //       .secondary,
-                                          //   onPressed: () {},
-                                          // ),
+                                          IconButton(
+                                            icon: const Icon(
+                                                Icons.favorite_border,
+                                                size: 30),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                            onPressed: () {},
+                                          ),
                                         ],
                                       ),
                                     ),

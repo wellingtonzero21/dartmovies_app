@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:dart_movies_app/view/initial_page.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,14 @@ class _IntroPageState extends State<IntroPage> {
   @override
   void initState() {
     super.initState();
+    Timer(const Duration(seconds: 4), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const InitialPage(),
+        ),
+      );
+    });
   }
 
   @override
@@ -42,13 +51,12 @@ class _IntroPageState extends State<IntroPage> {
               AnimatedTextKit(
                 animatedTexts: [
                   ColorizeAnimatedText(
-                    speed: const Duration(milliseconds: 800),
+                    speed: const Duration(milliseconds: 500),
                     'DartMovies',
                     textStyle: colorizeTextStyle,
                     colors: colorizeColors,
                   ),
                 ],
-                totalRepeatCount: 10,
                 displayFullTextOnTap: true,
                 repeatForever: true,
                 isRepeatingAnimation: true,
