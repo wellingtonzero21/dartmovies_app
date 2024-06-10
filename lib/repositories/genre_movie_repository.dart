@@ -2,14 +2,14 @@ import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:dart_movies_app/models/genre_movie_model.dart';
 
 class GenreMovieRepository {
-  GenreMovieRepository();
+  final HttpAdapter httpAdapter;
 
-  final HttpAdapter httpAdater = HttpAdapter();
+  GenreMovieRepository(this.httpAdapter);
 
   Future<GenreMovieModel> getGenreMovie() async {
     const url = 'https://api.themoviedb.org/3/genre/movie/list?language=pt-BR';
 
-    final response = await httpAdater.get(url: url);
+    final response = await httpAdapter.get(url: url);
 
     return GenreMovieModel.fromJson(response);
   }

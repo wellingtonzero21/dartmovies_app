@@ -1,3 +1,4 @@
+import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:dart_movies_app/bloc/media/media_bloc.dart';
 import 'package:dart_movies_app/models/media_model.dart';
 import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SearchPage extends StatefulWidget {
   final TextEditingController controller = TextEditingController();
   final DiscoverMovieRepository discoverMovieProvider =
-      DiscoverMovieRepository();
+      DiscoverMovieRepository(HttpAdapter());
 
   SearchPage({super.key});
 

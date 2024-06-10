@@ -26,18 +26,21 @@ part 'media_event.dart';
 part 'media_state.dart';
 
 class MediaBloc extends Bloc<MediaEvent, MediaState> {
-  DiscoverMovieRepository movieRepository = DiscoverMovieRepository();
+  DiscoverMovieRepository movieRepository =
+      DiscoverMovieRepository(HttpAdapter());
   MovieDetailsRepository movieDetailsRepository = MovieDetailsRepository();
   SerieDetailsRepository serieDetailsRepository = SerieDetailsRepository();
   TrendingMoviesRepository trendingRepository =
       TrendingMoviesRepository(httpAdater: HttpAdapter());
-  DiscoverMovieRepository watchContinueRepository = DiscoverMovieRepository();
+  DiscoverMovieRepository watchContinueRepository =
+      DiscoverMovieRepository(HttpAdapter());
   RecommendedMovieRepository recommendedMovieRepository =
       RecommendedMovieRepository();
   TrendingPeopleRepository trendingPeopleRepository =
       TrendingPeopleRepository(httpAdater: HttpAdapter());
   SearchMovieRepository searchRepository = SearchMovieRepository();
-  GenreMovieRepository genremovieRepository = GenreMovieRepository();
+  GenreMovieRepository genremovieRepository =
+      GenreMovieRepository(HttpAdapter());
   SeriesRepository seriesRepository =
       SeriesRepository(httpAdater: HttpAdapter());
   GenreSeriesRepository genreseriesRepository = GenreSeriesRepository();

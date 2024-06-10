@@ -4,11 +4,6 @@ class GenreMovieModel {
   GenreMovieModel({this.genres});
 
   GenreMovieModel.fromJson(Map<String, dynamic> json) {
-    /* if (json['genres'] != null) {
-      genres = json['genres']
-          .map((genre) => GenreMovieModelList.fromJson(genre))
-          .toList();
-    } */
     if (json['genres'] != null) {
       genres = <GenreMovieModelList>[];
       json['genres'].forEach((v) {
