@@ -6,8 +6,6 @@ import 'package:dart_movies_app/repositories/discover_movie_repository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 
-// Generate a MockClient using the Mockito package.
-// Create new instances of this class in each test.
 import 'discover_movie_repo_test.mocks.dart';
 
 @GenerateMocks([HttpAdapter])

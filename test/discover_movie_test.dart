@@ -6,8 +6,6 @@ import 'package:mockito/mockito.dart';
 
 import 'discover_movie_test.mocks.dart';
 
-// Generate a MockClient using the Mockito package.
-// Create new instances of this class in each test.
 @GenerateMocks([http.Client])
 void main() {
   group('fetchAlbum', () {
