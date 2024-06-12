@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
 import 'package:dart_movies_app/api/http_adapter.dart';
 import 'package:dart_movies_app/models/genre_movie_model.dart';
 import 'package:dart_movies_app/repositories/genre_movie_repository.dart';
