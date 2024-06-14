@@ -65,8 +65,9 @@ class SearchPageState extends State<SearchPage> {
                       paginaCorrente = 1;
                       _mediaBloc.add(LoadMoreMovies(paginaCorrente));
                     }
-
-                    _mediaBloc.add(SearchMovieEvent(value));
+                    if (value.length >= 3) {
+                      _mediaBloc.add(SearchMovieEvent(value));
+                    }
                   },
                 ),
                 Expanded(
@@ -142,48 +143,6 @@ class SearchPageState extends State<SearchPage> {
                         );
                       },
                     ),
-
-                    /* FutureBuilder(
-                      future: _fetchMoviesFuture,
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ));
-                        } else if (snapshot.hasError) {
-                          return Text('Erro: ${snapshot.error}');
-                        } else {
-                          return GridView.builder(
-                            controller: _scrollController,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              childAspectRatio: 35 / 50,
-                            ),
-                            itemCount: filteredMediaList.length,
-                            itemBuilder: (context, index) {
-                              MediaModel trendingMedia =
-                                  filteredMediaList[index];
-                              return GestureDetector(
-                                onTap: () {
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: SmallCard(
-                                    imageUrl:
-                                        'https://image.tmdb.org/t/p/w200/${trendingMedia.posterPath}',
-                                  ),
-                                ),
-                              );
-                            },
-                            shrinkWrap: true,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                          );
-                        }
-                      },
-                    ), */
                   ),
                 ),
               ],
